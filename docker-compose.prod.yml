@@ -30,6 +30,8 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_HOME: ${WORDPRESS_HOME:-http://localhost:9080}
+      WORDPRESS_SITEURL: ${WORDPRESS_SITEURL:-http://localhost:9080}
     ports:
       - "127.0.0.1:9080:80"
     volumes:
