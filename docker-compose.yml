@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: xpertz_wp_db
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-xpertz-wp}
+      MYSQL_USER: ${MYSQL_USER:-superadmin}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-root-me}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    container_name: xpertz_wp_app
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER:-superadmin}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-xpertz-wp}
+    ports:
+      - "9080:80"
+    volumes:
+      - wp_data:/var/www/html
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: xpertz_wp_pma
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-root-me}
+    ports:
+      - "9081:80"
+
+volumes:
+  db_data:
+  wp_data:

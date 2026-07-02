@@ -18,8 +18,8 @@ docker compose up -d
 ```
 
 Then open:
-- WordPress: http://localhost:8080
-- phpMyAdmin: http://localhost:8081
+- WordPress: http://localhost:9080
+- phpMyAdmin: http://localhost:9081
 
 ## Database defaults
 - Database: `xpertz-wp`
