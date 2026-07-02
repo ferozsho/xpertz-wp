@@ -40,6 +40,7 @@ services:
       - wp_data:/var/www/html
       - ./themes:/var/www/html/wp-content/themes
       - ./plugins:/var/www/html/wp-content/plugins
+      - ./uploads:/var/www/html/wp-content/uploads
 
   phpmyadmin:
     image: phpmyadmin:latest
