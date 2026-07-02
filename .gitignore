@@ -2,9 +2,6 @@
 # https://github.com/github/gitignore/blob/main/WordPress.gitignore
 
 # Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
 /wp-admin/
 /wp-content/index.php
 /wp-content/languages
@@ -20,14 +17,18 @@
 # Configuration
 wp-config.php
 
-# Example themes
+# Environment — never commit real credentials
+.env
+
+# Example themes (WP bundled)
 /wp-content/themes/twenty*/
 
-# Example plugin
+# Example plugin (WP bundled)
 /wp-content/plugins/hello.php
 
-# Uploads
+# Uploads — managed on server, not in Git
 /wp-content/uploads/
+uploads/
 
 # Log files
 *.log
@@ -35,14 +36,5 @@ wp-config.php
 # htaccess
 /.htaccess
 
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
-
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+# NOTE: themes/ and plugins/ are intentionally tracked in Git.
+# Add your custom theme/plugin folders there and commit them.
