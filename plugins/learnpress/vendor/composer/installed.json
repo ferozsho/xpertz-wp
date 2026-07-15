@@ -2,23 +2,23 @@
     "packages": [
         {
             "name": "symfony/css-selector",
-            "version": "v8.1.0",
-            "version_normalized": "8.1.0.0",
+            "version": "v6.4.34",
+            "version_normalized": "6.4.34.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "dc0e2be45c9b5588c82414f02ac574b4b986abcd"
+                "reference": "b0314c186f1464de048cce58979ff1625ca88bbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/dc0e2be45c9b5588c82414f02ac574b4b986abcd",
-                "reference": "dc0e2be45c9b5588c82414f02ac574b4b986abcd",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/b0314c186f1464de048cce58979ff1625ca88bbb",
+                "reference": "b0314c186f1464de048cce58979ff1625ca88bbb",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.4.1"
+                "php": ">=8.1"
             },
-            "time": "2026-05-29T05:06:50+00:00",
+            "time": "2026-02-16T08:37:21+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -50,7 +50,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v8.1.0"
+                "source": "https://github.com/symfony/css-selector/tree/v6.4.34"
             },
             "funding": [
                 {

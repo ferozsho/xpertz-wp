@@ -65,7 +65,7 @@
   border-radius: var(--lp-border-radius, 5px);
   background-color: #E5F7FF;
   color: #007AFF;
-  width: 100%;
+  max-width: 100%;
 }
 .learn-press-message.error {
   background-color: #FEE5E5;
@@ -695,7 +695,7 @@ ul .clearfix {
 
 @font-face {
   font-family: "lp-icon";
-  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=50") format("woff2");
+  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=15") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

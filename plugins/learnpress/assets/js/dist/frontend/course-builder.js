@@ -5589,6 +5589,13 @@ class BuilderEditCourse {
           if (element.checked) {
             data[fieldName] = element.value;
           }
+        } else if (element.type === 'select-multiple') {
+          // Collect every selected option, not just the first one (element.value).
+          const selectedValues = Array.from(element.selectedOptions).map(option => option.value).filter(value => value !== '');
+          if (!Array.isArray(data[fieldName])) {
+            data[fieldName] = [];
+          }
+          data[fieldName].push(...selectedValues);
         } else if (element.type === 'file') {
           if (element.files && element.files.length > 0) {
             data[fieldName] = element.files;
@@ -5612,8 +5619,11 @@ class BuilderEditCourse {
     }
 
     // Convert settings arrays to comma-separated strings for API
-    // Exclude course_categories and course_tags - they're handled separately
-    const excludeFromConversion = ['course_categories', 'course_tags'];
+    // Exclude course_categories and course_tags - they're handled separately.
+    // Exclude the extra-info fields too: their values are free text that may
+    // contain commas, so they must stay as arrays (one entry per input) and
+    // not be comma-joined, or the server splits a single value into several.
+    const excludeFromConversion = ['course_categories', 'course_tags', '_lp_requirements', '_lp_target_audiences', '_lp_key_features', '_lp_faqs_question', '_lp_faqs_answer'];
     Object.keys(data).forEach(key => {
       if (Array.isArray(data[key]) && !excludeFromConversion.includes(key)) {
         data[key] = data[key].join(',');
@@ -47382,17 +47392,17 @@ const replaceNode = (existing, replacement) => {
 /******/ 	});
 /************************************************************************/
 /******/ 	// The module cache
-/******/ 	const __webpack_module_cache__ = {};
+/******/ 	var __webpack_module_cache__ = {};
 /******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		const cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
 /******/ 		if (cachedModule !== undefined) {
 /******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
-/******/ 		const module = __webpack_module_cache__[moduleId] = {
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
 /******/ 			id: moduleId,
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
@@ -47401,7 +47411,7 @@ const replaceNode = (existing, replacement) => {
 /******/ 		// Execute the module function
 /******/ 		if (!(moduleId in __webpack_modules__)) {
 /******/ 			delete __webpack_module_cache__[moduleId];
-/******/ 			const e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
 /******/ 			e.code = 'MODULE_NOT_FOUND';
 /******/ 			throw e;
 /******/ 		}
@@ -47416,7 +47426,7 @@ const replaceNode = (existing, replacement) => {
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
 /******/ 		__webpack_require__.n = (module) => {
-/******/ 			const getter = module && module.__esModule ?
+/******/ 			var getter = module && module.__esModule ?
 /******/ 				() => (module['default']) :
 /******/ 				() => (module);
 /******/ 			__webpack_require__.d(getter, { a: getter });
@@ -47426,26 +47436,11 @@ const replaceNode = (existing, replacement) => {
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
-/******/ 		// define getter/value functions for harmony exports
+/******/ 		// define getter functions for harmony exports
 /******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			if(Array.isArray(definition)) {
-/******/ 				var i = 0;
-/******/ 				while(i < definition.length) {
-/******/ 					var key = definition[i++];
-/******/ 					var binding = definition[i++];
-/******/ 					if(!__webpack_require__.o(exports, key)) {
-/******/ 						if(binding === 0) {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
-/******/ 						} else {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
-/******/ 						}
-/******/ 					} else if(binding === 0) { i++; }
-/******/ 				}
-/******/ 			} else {
-/******/ 				for(var key in definition) {
-/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 					}
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
@@ -47453,14 +47448,14 @@ const replaceNode = (existing, replacement) => {
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.hasOwn(obj, prop))
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
 /******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(Symbol.toStringTag) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
@@ -47473,7 +47468,7 @@ const replaceNode = (existing, replacement) => {
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-let __webpack_exports__ = {};
+var __webpack_exports__ = {};
 // This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";

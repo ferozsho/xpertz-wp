@@ -227,7 +227,7 @@ p:last-child {
   border-radius: var(--lp-border-radius, 5px);
   background-color: #E5F7FF;
   color: #007AFF;
-  width: 100%;
+  max-width: 100%;
 }
 .learn-press-message.error {
   background-color: #FEE5E5;
@@ -7848,6 +7848,9 @@ div:where(.swal2-container).swal2-center > .swal2-popup {
   background-color: #fee2e2;
   color: #ef4444;
 }
+.lp-course-builder-content__section #extra_course_data .lp_course_extra_meta_box__field input {
+  max-width: unset;
+}
 .lp-course-builder-content__section #extra_course_data .lp_course_faq_meta_box__content {
   width: 100%;
 }
@@ -7984,9 +7987,15 @@ div:where(.swal2-container).swal2-center > .swal2-popup {
   border-radius: 4px;
   margin-bottom: 0;
 }
-.lp-course-builder-content__section #author_course_data .form-field input[type=text] {
+.lp-course-builder-content__section #author_course_data .ts-control li.item .item {
+  background: transparent;
+}
+.lp-course-builder-content__section #author_course_data .form-field input[type=text]:not(.dropdown-input) {
   width: unset;
   height: unset;
+}
+.lp-course-builder-content__section #author_course_data ._post_author_field {
+  margin-bottom: 24px;
 }
 @media (max-width: 768px) {
   .lp-course-builder-content__section .cb-featured-image-container {
@@ -9952,6 +9961,9 @@ div:where(.swal2-container).swal2-center > .swal2-popup {
   background-color: #fee2e2;
   color: #ef4444;
 }
+.lp-cb-tab-content .cb-section__course-edit #extra_course_data .lp_course_extra_meta_box__field input {
+  max-width: unset;
+}
 .lp-cb-tab-content .cb-section__course-edit #extra_course_data .lp_course_faq_meta_box__content {
   width: 100%;
 }
@@ -10088,9 +10100,15 @@ div:where(.swal2-container).swal2-center > .swal2-popup {
   border-radius: 4px;
   margin-bottom: 0;
 }
-.lp-cb-tab-content .cb-section__course-edit #author_course_data .form-field input[type=text] {
+.lp-cb-tab-content .cb-section__course-edit #author_course_data .ts-control li.item .item {
+  background: transparent;
+}
+.lp-cb-tab-content .cb-section__course-edit #author_course_data .form-field input[type=text]:not(.dropdown-input) {
   width: unset;
   height: unset;
+}
+.lp-cb-tab-content .cb-section__course-edit #author_course_data ._post_author_field {
+  margin-bottom: 24px;
 }
 @media (max-width: 768px) {
   .lp-cb-tab-content .cb-section__course-edit .cb-featured-image-container {
@@ -14647,6 +14665,9 @@ li.children-visible > label > .lp-cat-toggle {
   background-color: #fee2e2;
   color: #ef4444;
 }
+.cb-section__quiz-edit #extra_course_data .lp_course_extra_meta_box__field input {
+  max-width: unset;
+}
 .cb-section__quiz-edit #extra_course_data .lp_course_faq_meta_box__content {
   width: 100%;
 }
@@ -14783,9 +14804,15 @@ li.children-visible > label > .lp-cat-toggle {
   border-radius: 4px;
   margin-bottom: 0;
 }
-.cb-section__quiz-edit #author_course_data .form-field input[type=text] {
+.cb-section__quiz-edit #author_course_data .ts-control li.item .item {
+  background: transparent;
+}
+.cb-section__quiz-edit #author_course_data .form-field input[type=text]:not(.dropdown-input) {
   width: unset;
   height: unset;
+}
+.cb-section__quiz-edit #author_course_data ._post_author_field {
+  margin-bottom: 24px;
 }
 @media (max-width: 768px) {
   .cb-section__quiz-edit .cb-featured-image-container {
@@ -17058,6 +17085,91 @@ body.lp-popup-open {
     width: 100%;
   }
 }
+/**
+* Style for the Tom Select
+* @link https://tom-select.js.org/
+* @since 4.2.9.5
+* @version 1.0.0
+*/
+.lp-tom-select {
+  min-width: 150px;
+}
+.lp-tom-select.plugin-dropdown_input .dropdown-input {
+  width: 95%;
+  min-width: auto;
+  border: 1px solid #2271b1;
+}
+.lp-tom-select[multiple] {
+  display: block;
+  height: 36px !important;
+  border: 1px solid #d0d0d0;
+}
+.lp-tom-select.ts-wrapper {
+  min-width: 200px;
+  width: fit-content;
+}
+.lp-tom-select.ts-wrapper dropdown-active .ts-control input.dropdown-input {
+  border-color: #d0d0d0;
+}
+.lp-tom-select.ts-wrapper input.dropdown-input {
+  margin: 0 auto 5px;
+  padding: 0 8px;
+  box-shadow: none;
+}
+.lp-tom-select.ts-wrapper.multi.has-items .ts-control {
+  padding: 3px 0 3px 3px;
+}
+.lp-tom-select.ts-wrapper .ts-control {
+  min-height: 35px;
+  padding: 4px;
+}
+.lp-tom-select.ts-wrapper .ts-control input[type=text] {
+  min-width: 30px;
+}
+.lp-tom-select.ts-wrapper .ts-control li {
+  margin: 0 5px 3px 0;
+  padding: 3px 8px;
+  background: #eee;
+  border-radius: var(--lp-border-radius);
+}
+.lp-tom-select.ts-wrapper .ts-control .item {
+  margin: 0 5px 2px 0;
+  padding: 1px 2px;
+  background: #eee;
+  border-radius: var(--lp-border-radius);
+}
+.lp-tom-select.ts-wrapper .ts-dropdown {
+  border: 1px solid #d0d0d0;
+  padding-top: 5px;
+  border-radius: 3px;
+  margin-top: -1px;
+}
+.lp-tom-select.ts-wrapper .ts-dropdown .spinner {
+  visibility: visible;
+}
+.lp-tom-select.ts-wrapper .ts-dropdown .spinner::after {
+  content: "";
+  border: none;
+}
+.lp-tom-select .dropdown-input-wrap {
+  display: flex;
+}
+
+/*.search-box {
+	.ts-wrapper {
+		float: left;
+		margin-right: 4px;
+
+		.ts-control {
+			padding: 3px;
+			height: 30px;
+
+			li {
+				margin: 0;
+			}
+		}
+	}
+}*/
 @keyframes rotation {
   0% {
     transform: rotate(0deg);
@@ -17190,7 +17302,7 @@ body.lp-popup-open {
   gap: 10px;
 }
 .learn-press-course-builder .cb-section__course-edit .form-field input[type=number],
-.learn-press-course-builder .cb-section__course-edit .form-field input[type=text],
+.learn-press-course-builder .cb-section__course-edit .form-field input[type=text]:not(.dropdown-input),
 .learn-press-course-builder .cb-section__course-edit .form-field input[type=datetime-local],
 .learn-press-course-builder .cb-section__course-edit .lp-meta-box__duration input[type=number] {
   width: 100%;
