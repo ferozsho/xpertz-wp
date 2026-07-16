@@ -61,10 +61,11 @@ body.single-lp_course:not(.xhc-scrolled) .xhc-site-header {
 body.single-lp_course:not(.xhc-scrolled) .xpc-hero-grid { padding-top: 126px; }
 
 .xhc-header-shell {
-	display: flex;
-	gap: 30px;
+	display: grid;
+	grid-template-columns: minmax(140px, 1fr) auto minmax(280px, 1fr);
+	gap: 24px;
 	align-items: center;
-	width: min(1320px, calc(100% - 48px));
+	width: min(1240px, calc(100% - 40px));
 	height: 100%;
 	margin-inline: auto;
 }
@@ -73,6 +74,7 @@ body.single-lp_course:not(.xhc-scrolled) .xpc-hero-grid { padding-top: 126px; }
 	display: flex;
 	flex: 0 0 auto;
 	align-items: center;
+	justify-self: start;
 }
 
 .xhc-brand a {
@@ -91,7 +93,10 @@ body.single-lp_course:not(.xhc-scrolled) .xpc-hero-grid { padding-top: 126px; }
 	object-fit: contain;
 }
 
-.xhc-desktop-nav { min-width: 0; }
+.xhc-desktop-nav {
+	min-width: 0;
+	justify-self: center;
+}
 
 .xhc-nav-list {
 	display: flex;
@@ -119,6 +124,7 @@ body.single-lp_course:not(.xhc-scrolled) .xpc-hero-grid { padding-top: 126px; }
 	font-size: 14px;
 	font-weight: 650;
 	text-decoration: none;
+	white-space: nowrap;
 	cursor: pointer;
 	transition: color var(--xhc-transition), background var(--xhc-transition);
 }
@@ -211,7 +217,7 @@ body.single-lp_course:not(.xhc-scrolled) .xhc-nav-list > li > :is(a, button):foc
 	display: flex;
 	gap: 5px;
 	align-items: center;
-	margin-left: auto;
+	justify-self: end;
 }
 
 .xhc-action { position: relative; }
@@ -606,10 +612,11 @@ body:is(.woocommerce-cart, .woocommerce-checkout, .woocommerce-account) .entry-c
 .xhc-checkout-context > span { color: var(--xhc-muted); font-size: 11px; }
 .site-footer { border-top: 3px solid var(--xhc-primary) !important; }
 
-@media (max-width: 1199px) {
-	.xhc-header-shell { gap: 14px; width: min(100% - 32px, 1180px); }
+@media (max-width: 1279px) {
+	.xhc-header-shell { display: flex; gap: 14px; width: min(100% - 32px, 1180px); }
 	.xhc-desktop-nav { display: none; }
 	.xhc-mobile-toggle { display: inline-grid; }
+	.xhc-header-actions { margin-left: auto; }
 	.xhc-account-toggle span,
 	.xhc-account-toggle > .xhc-icon { display: none; }
 	.xhc-pricing-catalog .xhc-account-course-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
