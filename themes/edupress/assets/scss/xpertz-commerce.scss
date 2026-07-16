@@ -306,6 +306,13 @@ body.single-lp_course:not(.xhc-scrolled) .xhc-icon-button:focus-visible {
 	font: inherit;
 	text-align: left;
 	cursor: pointer;
+	transition: border-color var(--xhc-transition), background var(--xhc-transition), box-shadow var(--xhc-transition);
+}
+
+.xhc-account-toggle:hover {
+	border-color: var(--xhc-primary);
+	background: var(--xhc-primary-soft);
+	color: var(--xhc-text);
 }
 
 .xhc-account-toggle img,

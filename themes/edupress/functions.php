@@ -35,14 +35,14 @@ function edupress_setup() {
 
 	load_theme_textdomain( 'edupress', get_template_directory() . '/languages' );
 
-	add_theme_support( 'automatic-feed-links' ); 
+	add_theme_support( 'automatic-feed-links' );
 
 	add_theme_support( 'title-tag' );
 
 	add_theme_support( 'post-thumbnails' );
 
 	set_post_thumbnail_size( 240, 180, true );
-	
+
 	// Featured Post Main Thumbnail on the front page & single page template
 	add_image_size( 'edupress-large-thumbnail', 780, 400, true );
 
@@ -75,7 +75,7 @@ function edupress_setup() {
 	   'flex-height' => true,
 	) );
 
-	/* Remove support for Block Based Widgets 
+	/* Remove support for Block Based Widgets
 	==================================== */
     remove_theme_support( 'widgets-block-editor' );
 
@@ -92,7 +92,7 @@ endif; // edupress_setup
 add_action( 'after_setup_theme', 'edupress_setup' );
 
 add_filter( 'image_size_names_choose', 'edupress_custom_sizes' );
- 
+
 function edupress_custom_sizes( $sizes ) {
 	return array_merge( $sizes, array(
 		'edupress-large-thumbnail' => __( 'EduPress: Slideshow Size (780x400)', 'edupress' ),
@@ -259,7 +259,7 @@ require_once( get_template_directory() . '/ilovewp-admin/helper-functions.php');
 ================================== */
 
 //require only in admin!
-if( is_admin() ) {	
+if( is_admin() ) {
 	require_once('ilovewp-admin/ilovewp-theme-settings.php');
 
 	if (current_user_can( 'manage_options' ) ) {
@@ -283,3 +283,6 @@ if( is_admin() ) {
 	}
 
 }
+
+// Hide admin toolbar on frontend.
+add_filter( 'show_admin_bar', '__return_false' );

@@ -18,6 +18,34 @@ body {
     color: var(--text-main) !important;
 }
 
+/* Remove underlines on hover globally for buttons and navigation. */
+button:hover,
+.button:hover,
+.faux-button:hover,
+.wp-block-button__link:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+input[type="submit"]:hover,
+button:focus,
+.button:focus,
+.faux-button:focus,
+.wp-block-button__link:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+input[type="submit"]:focus,
+a:hover,
+a:focus,
+.site-header a:hover,
+.site-header a:focus,
+#site-header-navigation a:hover,
+#site-header-navigation a:focus,
+.large-nav a:hover,
+.large-nav a:focus,
+.site-footer a:hover,
+.site-footer a:focus {
+    text-decoration: none !important;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-primary) !important;
     font-weight: 700 !important;
