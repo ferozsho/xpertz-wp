@@ -543,7 +543,7 @@ function xpertz_commerce_account_links() {
 function xpertz_commerce_header_account() {
 	if ( ! is_user_logged_in() ) {
 		?>
-		<div class="xhc-auth-actions"><a class="xhc-sign-in" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Sign in', 'edupress' ); ?></a><a class="xhc-sign-up" href="<?php echo esc_url( add_query_arg( 'action', 'register', wc_get_page_permalink( 'myaccount' ) ) ); ?>"><?php esc_html_e( 'Sign up', 'edupress' ); ?></a></div>
+		<div class="xhc-auth-actions"><a class="xhc-sign-up" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Sign in / Register', 'edupress' ); ?></a></div>
 		<?php
 		return;
 	}
@@ -608,7 +608,7 @@ function xpertz_render_lms_header() {
 			<?php if ( is_user_logged_in() ) : ?>
 				<a class="xhc-mobile-account-primary" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php echo get_avatar( get_current_user_id(), 40 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><small><?php esc_html_e( 'Signed in as', 'edupress' ); ?></small><strong><?php echo esc_html( wp_get_current_user()->display_name ); ?></strong></span><?php echo xpertz_commerce_icon( 'chevron-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
 			<?php else : ?>
-				<a class="xhc-primary-link" href="<?php echo esc_url( add_query_arg( 'action', 'register', wc_get_page_permalink( 'myaccount' ) ) ); ?>"><?php esc_html_e( 'Create free account', 'edupress' ); ?></a><a class="xhc-secondary-link" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Sign in', 'edupress' ); ?></a>
+				<a class="xhc-primary-link" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Sign in / Register', 'edupress' ); ?></a>
 			<?php endif; ?>
 		</div>
 	</aside>

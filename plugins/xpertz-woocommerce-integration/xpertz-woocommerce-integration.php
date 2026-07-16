@@ -2,14 +2,14 @@
 /**
  * Plugin Name: XPERTZ WooCommerce LearnPress Integration
  * Description: Uses WooCommerce as the commerce engine for LearnPress courses and enrolls paid learners automatically.
- * Version: 2.2.1
+ * Version: 2.3.0
  * Requires Plugins: woocommerce, learnpress
  * Text Domain: xpertz-commerce
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'XPERTZ_WC_LP_VERSION', '2.2.1' );
+define( 'XPERTZ_WC_LP_VERSION', '2.3.0' );
 
 /**
  * Create the public LMS pages used by the global navigation.
@@ -118,12 +118,134 @@ function xpertz_wc_lp_activate() {
 	update_option( 'users_can_register', 1 );
 	update_option( 'woocommerce_enable_myaccount_registration', 'yes' );
 	update_option( 'woocommerce_enable_signup_and_login_from_checkout', 'yes' );
+	update_option( 'woocommerce_registration_generate_username', 'no' );
+	update_option( 'woocommerce_registration_generate_password', 'no' );
 	xpertz_wc_lp_provision_pages();
 	xpertz_wc_lp_provision_course_categories();
 	update_option( 'xpertz_wc_lp_flush_rewrites', 1, false );
 	update_option( 'xpertz_wc_lp_version', XPERTZ_WC_LP_VERSION );
 }
 register_activation_hook( __FILE__, 'xpertz_wc_lp_activate' );
+
+/**
+ * Return a sanitized value submitted through the WooCommerce registration form.
+ *
+ * WooCommerce verifies the registration nonce before processing the form. This
+ * helper is also used to repopulate fields after validation errors.
+ *
+ * @param string $key Form field key.
+ * @return string
+ */
+function xpertz_wc_registration_value( $key ) {
+	if ( ! isset( $_POST[ $key ] ) || ! is_string( $_POST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		return '';
+	}
+
+	return wc_clean( wp_unslash( $_POST[ $key ] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+}
+
+/** Add customer identity fields before WooCommerce's account credentials. */
+function xpertz_wc_registration_identity_fields() {
+	?>
+	<div class="xhc-register-name-grid">
+		<p class="woocommerce-form-row form-row form-row-first">
+			<label for="reg_first_name"><?php esc_html_e( 'First name', 'xpertz-commerce' ); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e( 'Required', 'xpertz-commerce' ); ?></span></label>
+			<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="first_name" id="reg_first_name" autocomplete="given-name" value="<?php echo esc_attr( xpertz_wc_registration_value( 'first_name' ) ); ?>" required aria-required="true">
+		</p>
+		<p class="woocommerce-form-row form-row form-row-last">
+			<label for="reg_last_name"><?php esc_html_e( 'Last name', 'xpertz-commerce' ); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e( 'Required', 'xpertz-commerce' ); ?></span></label>
+			<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="last_name" id="reg_last_name" autocomplete="family-name" value="<?php echo esc_attr( xpertz_wc_registration_value( 'last_name' ) ); ?>" required aria-required="true">
+		</p>
+	</div>
+	<?php
+}
+add_action( 'woocommerce_register_form_start', 'xpertz_wc_registration_identity_fields' );
+
+/** Add contact and password-confirmation fields before WooCommerce privacy text. */
+function xpertz_wc_registration_contact_fields() {
+	?>
+	<p class="woocommerce-form-row form-row form-row-wide">
+		<label for="reg_billing_phone"><?php esc_html_e( 'Phone number', 'xpertz-commerce' ); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e( 'Required', 'xpertz-commerce' ); ?></span></label>
+		<input type="tel" class="woocommerce-Input woocommerce-Input--text input-text" name="billing_phone" id="reg_billing_phone" autocomplete="tel" inputmode="tel" value="<?php echo esc_attr( xpertz_wc_registration_value( 'billing_phone' ) ); ?>" required aria-required="true">
+	</p>
+	<p class="woocommerce-form-row form-row form-row-wide">
+		<label for="reg_password_confirm"><?php esc_html_e( 'Confirm password', 'xpertz-commerce' ); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e( 'Required', 'xpertz-commerce' ); ?></span></label>
+		<input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="password_confirm" id="reg_password_confirm" autocomplete="new-password" required aria-required="true">
+	</p>
+	<?php
+}
+add_action( 'woocommerce_register_form', 'xpertz_wc_registration_contact_fields', 10 );
+
+/**
+ * Validate the additional customer registration fields.
+ *
+ * @param WP_Error $errors   Registration errors.
+ * @param string   $username Requested username.
+ * @param string   $password Requested password.
+ * @param string   $email    Requested email address.
+ * @return WP_Error
+ */
+function xpertz_wc_validate_registration_fields( $errors, $username, $password, $email ) {
+	unset( $username, $email );
+
+	$first_name       = xpertz_wc_registration_value( 'first_name' );
+	$last_name        = xpertz_wc_registration_value( 'last_name' );
+	$phone            = xpertz_wc_registration_value( 'billing_phone' );
+	$password_confirm = xpertz_wc_registration_value( 'password_confirm' );
+
+	if ( '' === $first_name ) {
+		$errors->add( 'first_name_required', __( 'Please enter your first name.', 'xpertz-commerce' ) );
+	}
+	if ( '' === $last_name ) {
+		$errors->add( 'last_name_required', __( 'Please enter your last name.', 'xpertz-commerce' ) );
+	}
+	if ( '' === $phone ) {
+		$errors->add( 'phone_required', __( 'Please enter your phone number.', 'xpertz-commerce' ) );
+	} elseif ( class_exists( 'WC_Validation' ) && ! WC_Validation::is_phone( $phone ) ) {
+		$errors->add( 'phone_invalid', __( 'Please enter a valid phone number.', 'xpertz-commerce' ) );
+	}
+	if ( '' === $password_confirm ) {
+		$errors->add( 'password_confirmation_required', __( 'Please confirm your password.', 'xpertz-commerce' ) );
+	} elseif ( ! hash_equals( (string) $password, $password_confirm ) ) {
+		$errors->add( 'password_mismatch', __( 'The passwords do not match.', 'xpertz-commerce' ) );
+	}
+
+	return $errors;
+}
+add_filter( 'woocommerce_process_registration_errors', 'xpertz_wc_validate_registration_fields', 10, 4 );
+
+/**
+ * Add submitted names to the new WordPress customer record.
+ *
+ * @param array $customer_data New customer data.
+ * @return array
+ */
+function xpertz_wc_registration_customer_data( $customer_data ) {
+	$first_name = xpertz_wc_registration_value( 'first_name' );
+	$last_name  = xpertz_wc_registration_value( 'last_name' );
+	$full_name  = trim( $first_name . ' ' . $last_name );
+
+	$customer_data['first_name'] = $first_name;
+	$customer_data['last_name']  = $last_name;
+	if ( $full_name ) {
+		$customer_data['display_name'] = $full_name;
+	}
+
+	return $customer_data;
+}
+add_filter( 'woocommerce_new_customer_data', 'xpertz_wc_registration_customer_data' );
+
+/**
+ * Store WooCommerce billing identity data for a newly registered customer.
+ *
+ * @param int $customer_id New customer ID.
+ */
+function xpertz_wc_save_registration_customer_meta( $customer_id ) {
+	update_user_meta( $customer_id, 'billing_first_name', xpertz_wc_registration_value( 'first_name' ) );
+	update_user_meta( $customer_id, 'billing_last_name', xpertz_wc_registration_value( 'last_name' ) );
+	update_user_meta( $customer_id, 'billing_phone', xpertz_wc_registration_value( 'billing_phone' ) );
+}
+add_action( 'woocommerce_created_customer', 'xpertz_wc_save_registration_customer_meta' );
 
 /**
  * Return the mapped WooCommerce product for a LearnPress course.
