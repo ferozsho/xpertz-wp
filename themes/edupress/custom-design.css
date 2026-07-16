@@ -196,6 +196,7 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid rgba(0,0,0,0.04);
     display: flex;
     flex-direction: column;
+    text-align: left !important;
 }
 .course-card:hover {
     transform: translateY(-8px);
@@ -471,6 +472,7 @@ ul.learn-press-courses li.course .course-item {
     border: 1px solid rgba(0,0,0,0.04) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     width: 100% !important;
+    text-align: left !important; /* Override theme's center-alignment default */
 }
 ul.learn-press-courses li.course .course-item:hover {
     transform: translateY(-4px) !important;
@@ -505,6 +507,7 @@ ul.learn-press-courses li.course .course-content {
     display: flex !important;
     flex-direction: column !important;
     background: #ffffff !important;
+    text-align: left !important;
 }
 
 /* Title Override */
@@ -622,6 +625,7 @@ ul.learn-press-courses li.course .course-readmore a:hover {
 body.single-lp_course #site-main {
     background: #ffffff;
     padding: 60px 0;
+    text-align: left !important; /* Force left-alignment globally on single course elements */
 }
 .course-summary {
     display: grid;
