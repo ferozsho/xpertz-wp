@@ -223,6 +223,11 @@ require get_template_directory() . '/inc/customizer.php';
 require get_template_directory() . '/inc/xpertz-course.php';
 
 /**
+ * XPERTZ LMS header and WooCommerce customer experience.
+ */
+require get_template_directory() . '/inc/xpertz-commerce.php';
+
+/**
  * Modifies tag cloud widget arguments to have all tags in the widget same font size.
  *
  * @since EduPress 1.0

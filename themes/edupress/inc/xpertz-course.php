@@ -613,6 +613,8 @@ function xpertz_render_course_page( $course ) {
 	$author_id      = (int) get_post_field( 'post_author', $course_id );
 	$instructor     = get_the_author_meta( 'display_name', $author_id ) ?: esc_html__( 'XPERTZ Faculty', 'edupress' );
 	$price_html     = $legacy_course ? $legacy_course->get_course_price_html() : '';
+	$product_id     = function_exists( 'xpertz_wc_get_product_id_for_course' ) ? xpertz_wc_get_product_id_for_course( $course_id ) : 0;
+	$wc_product     = $product_id && function_exists( 'wc_get_product' ) ? wc_get_product( $product_id ) : false;
 	$regular_price  = $course->get_regular_price();
 	$current_price  = $course->get_price();
 	$discount       = $regular_price > 0 && $current_price < $regular_price ? (int) round( ( ( $regular_price - $current_price ) / $regular_price ) * 100 ) : 0;
@@ -621,6 +623,10 @@ function xpertz_render_course_page( $course ) {
 	$curriculum     = $template->html_curriculum( $course, $user );
 	$material       = $template->html_material( $course, $user );
 	$course_url     = $course->get_permalink();
+	$wishlist_ids   = function_exists( 'xpertz_commerce_wishlist_ids' ) ? xpertz_commerce_wishlist_ids() : array();
+	$is_wishlisted  = in_array( $course_id, $wishlist_ids, true );
+	$owns_course    = function_exists( 'xpertz_wc_user_owns_course' ) && xpertz_wc_user_owns_course( $course_id );
+	$recent_courses = function_exists( 'xpertz_commerce_recent_course_ids' ) ? array_slice( xpertz_commerce_recent_course_ids( $course_id ), 0, 3 ) : array();
 	$modified       = get_post_modified_time( get_option( 'date_format' ), false, $course_id );
 	$category_name  = $categories ? $categories[0]->name : esc_html__( 'Professional development', 'edupress' );
 	$category_url   = $categories ? get_term_link( $categories[0] ) : get_post_type_archive_link( 'lp_course' );
@@ -769,12 +775,14 @@ function xpertz_render_course_page( $course ) {
 						<div class="xpc-sidebar-image"><?php echo xpertz_course_image( $course_id ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><a href="#curriculum" aria-label="<?php esc_attr_e( 'Preview course curriculum', 'edupress' ); ?>"><?php echo xpertz_course_icon( 'play' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a></div>
 						<div class="xpc-enrollment-body">
 							<div class="xpc-price-row"><div class="xpc-price"><?php echo $price_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><?php if ( $discount ) : ?><span class="xpc-discount"><?php echo esc_html( sprintf( __( '%d%% off', 'edupress' ), $discount ) ); ?></span><?php endif; ?></div>
+							<?php if ( $wc_product ) : ?><div class="xpc-stock-status <?php echo $wc_product->is_in_stock() ? 'is-available' : 'is-unavailable'; ?>"><?php echo xpertz_course_icon( $wc_product->is_in_stock() ? 'shield-check' : 'lock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php echo $wc_product->is_in_stock() ? esc_html__( 'In stock · Instant access', 'edupress' ) : esc_html__( 'Currently unavailable', 'edupress' ); ?></span></div><?php endif; ?>
 							<?php if ( $sale_end ) : ?><div class="xpc-countdown" data-countdown="<?php echo esc_attr( $sale_end ); ?>"><?php echo xpertz_course_icon( 'clock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><strong><?php esc_html_e( 'Offer ends soon', 'edupress' ); ?></strong><small data-countdown-label></small></span></div><?php endif; ?>
 							<div class="xpc-course-actions"><?php echo $buttons; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 							<a href="#curriculum" class="xpc-button xpc-button--secondary"><?php esc_html_e( 'View curriculum', 'edupress' ); ?></a>
 							<div class="xpc-secondary-actions">
-								<button type="button" data-wishlist-course="<?php echo esc_attr( $course_id ); ?>" aria-pressed="false"><?php echo xpertz_course_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php esc_html_e( 'Wishlist', 'edupress' ); ?></span></button>
+								<button type="button" class="<?php echo $is_wishlisted ? 'is-saved' : ''; ?>" data-wishlist-course="<?php echo esc_attr( $course_id ); ?>" aria-pressed="<?php echo $is_wishlisted ? 'true' : 'false'; ?>"><?php echo xpertz_course_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php echo $is_wishlisted ? esc_html__( 'Saved', 'edupress' ) : esc_html__( 'Wishlist', 'edupress' ); ?></span></button>
 								<button type="button" data-share-course data-url="<?php echo esc_url( $course_url ); ?>" data-title="<?php echo esc_attr( $course->get_title() ); ?>"><?php echo xpertz_course_icon( 'share' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php esc_html_e( 'Share', 'edupress' ); ?></span></button>
+								<?php if ( $wc_product && $wc_product->is_in_stock() ) : ?><button type="button" data-gift-course-open="<?php echo esc_attr( $product_id ); ?>"><?php echo xpertz_course_icon( 'mail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php esc_html_e( 'Gift course', 'edupress' ); ?></span></button><?php endif; ?>
 							</div>
 							<div class="xpc-guarantee"><?php echo xpertz_course_icon( 'shield-check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><strong><?php esc_html_e( 'Learn with confidence', 'edupress' ); ?></strong><small><?php esc_html_e( 'Secure enrollment and immediate access', 'edupress' ); ?></small></span></div>
 							<div class="xpc-includes">
@@ -799,6 +807,7 @@ function xpertz_render_course_page( $course ) {
 								</dl>
 							</div>
 							<?php if ( $tags ) : ?><div class="xpc-tags"><h3><?php esc_html_e( 'Topics', 'edupress' ); ?></h3><div><?php foreach ( $tags as $tag ) : ?><a href="<?php echo esc_url( get_term_link( $tag ) ); ?>"><?php echo esc_html( $tag->name ); ?></a><?php endforeach; ?></div></div><?php endif; ?>
+							<?php if ( $recent_courses ) : ?><div class="xpc-recent-courses"><h3><?php esc_html_e( 'Recently viewed', 'edupress' ); ?></h3><?php foreach ( $recent_courses as $recent_id ) : ?><a href="<?php echo esc_url( get_permalink( $recent_id ) ); ?>"><?php echo get_the_post_thumbnail( $recent_id, 'thumbnail', array( 'loading' => 'lazy', 'alt' => '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><strong><?php echo esc_html( get_the_title( $recent_id ) ); ?></strong><small><?php esc_html_e( 'View course', 'edupress' ); ?></small></span></a><?php endforeach; ?></div><?php endif; ?>
 						</div>
 					</div>
 				</aside>
@@ -809,8 +818,23 @@ function xpertz_render_course_page( $course ) {
 
 		<div class="xpc-mobile-bar" aria-label="<?php esc_attr_e( 'Course enrollment', 'edupress' ); ?>">
 			<div class="xpc-mobile-price"><?php echo $price_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-			<button type="button" class="xpc-button xpc-button--primary" data-mobile-enroll><?php esc_html_e( 'Enroll now', 'edupress' ); ?><?php echo xpertz_course_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></button>
+			<button type="button" class="xpc-button xpc-button--primary" data-mobile-enroll><?php echo $owns_course ? esc_html__( 'Continue', 'edupress' ) : esc_html__( 'Enroll now', 'edupress' ); ?><?php echo xpertz_course_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></button>
 		</div>
+		<?php if ( $wc_product && $wc_product->is_in_stock() ) : ?>
+			<div class="xpc-gift-dialog" role="dialog" aria-modal="true" aria-labelledby="xpc-gift-title" data-gift-course-dialog hidden>
+				<div class="xpc-gift-backdrop" data-gift-course-close></div>
+				<div class="xpc-gift-panel">
+					<div class="xpc-gift-heading"><div><span class="xpc-eyebrow"><?php esc_html_e( 'Give the gift of learning', 'edupress' ); ?></span><h2 id="xpc-gift-title"><?php echo esc_html( sprintf( __( 'Gift %s', 'edupress' ), $course->get_title() ) ); ?></h2></div><button type="button" data-gift-course-close aria-label="<?php esc_attr_e( 'Close gift form', 'edupress' ); ?>"><?php echo function_exists( 'xpertz_commerce_icon' ) ? xpertz_commerce_icon( 'close' ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></button></div>
+					<form data-gift-course-form data-product-id="<?php echo esc_attr( $product_id ); ?>">
+						<label><?php esc_html_e( 'Recipient email', 'edupress' ); ?><input type="email" name="email" required autocomplete="email"></label>
+						<label><?php esc_html_e( 'Recipient name', 'edupress' ); ?><input type="text" name="name" maxlength="100" autocomplete="name"></label>
+						<label><?php esc_html_e( 'Personal message', 'edupress' ); ?><textarea name="message" rows="4" maxlength="500"></textarea></label>
+						<p><?php esc_html_e( 'After successful payment, the recipient receives their own XPERTZ account and course access.', 'edupress' ); ?></p>
+						<button type="submit" class="xpc-button xpc-button--primary"><?php esc_html_e( 'Add gift to cart', 'edupress' ); ?></button>
+					</form>
+				</div>
+			</div>
+		<?php endif; ?>
 	</main>
 	<?php
 }

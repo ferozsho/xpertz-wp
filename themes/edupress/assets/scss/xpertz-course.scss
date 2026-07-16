@@ -1524,6 +1524,24 @@ body.single-lp_course .wrapper-frame {
 	font-weight: 800;
 }
 
+.xpc-stock-status {
+	display: flex;
+	gap: 7px;
+	align-items: center;
+	margin: -7px 0 16px;
+	color: var(--xpc-muted);
+	font-size: 11px;
+	font-weight: 650;
+}
+
+.xpc-stock-status .xpc-icon {
+	width: 15px;
+	height: 15px;
+}
+
+.xpc-stock-status.is-available { color: var(--xpc-success); }
+.xpc-stock-status.is-unavailable { color: #b42318; }
+
 .xpc-countdown {
 	display: flex;
 	gap: 9px;
@@ -1600,6 +1618,23 @@ body.single-lp_course .wrapper-frame {
 	padding: 0 !important;
 }
 
+.xpc-course-actions .lp-woocommerce-purchase-wrapper {
+	display: grid;
+	gap: 10px;
+}
+
+.xpc-course-actions .xpc-buy-now-button {
+	border-color: #d8d0f4 !important;
+	background: #fff !important;
+	box-shadow: none !important;
+	color: var(--xpc-primary-dark) !important;
+}
+
+.xpc-course-actions .xpc-buy-now-button:hover {
+	background: var(--xpc-primary-soft) !important;
+	box-shadow: none !important;
+}
+
 .xpc-course-actions .course-buttons > *,
 .xpc-course-actions button,
 .xpc-course-actions .lp-button,
@@ -1630,7 +1665,7 @@ body.single-lp_course .wrapper-frame {
 
 .xpc-secondary-actions {
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	gap: 8px;
 	margin-top: 12px;
 }
@@ -1689,7 +1724,8 @@ body.single-lp_course .wrapper-frame {
 
 .xpc-includes,
 .xpc-course-facts,
-.xpc-tags {
+.xpc-tags,
+.xpc-recent-courses {
 	margin-top: 23px;
 	padding-top: 21px;
 	border-top: 1px solid var(--xpc-border);
@@ -1697,7 +1733,8 @@ body.single-lp_course .wrapper-frame {
 
 .xpc-includes h3,
 .xpc-course-facts h3,
-.xpc-tags h3 {
+.xpc-tags h3,
+.xpc-recent-courses h3 {
 	margin: 0 0 13px;
 	color: var(--xpc-text);
 	font-size: 13px;
@@ -1780,6 +1817,90 @@ body.single-lp_course .wrapper-frame {
 	background: var(--xpc-primary-soft);
 	color: var(--xpc-primary-dark);
 }
+
+.xpc-recent-courses {
+	display: grid;
+	gap: 8px;
+}
+
+.xpc-recent-courses > h3 { margin-bottom: 5px; }
+
+.xpc-recent-courses > a {
+	display: flex;
+	gap: 9px;
+	align-items: center;
+	padding: 6px;
+	border-radius: 9px;
+	color: var(--xpc-text);
+	text-decoration: none;
+}
+
+.xpc-recent-courses > a:hover { background: var(--xpc-primary-soft); }
+.xpc-recent-courses img { width: 44px; height: 36px; border-radius: 7px; object-fit: cover; }
+.xpc-recent-courses span { display: grid; min-width: 0; }
+.xpc-recent-courses strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.xpc-recent-courses small { color: var(--xpc-muted); font-size: 9px; }
+
+.xpc-gift-dialog[hidden] { display: none; }
+
+.xpc-gift-dialog {
+	position: fixed;
+	inset: 0;
+	z-index: 10060;
+	display: grid;
+	place-items: center;
+	padding: 20px;
+}
+
+.xpc-gift-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(7, 10, 25, 0.74);
+	backdrop-filter: blur(8px);
+}
+
+.xpc-gift-panel {
+	position: relative;
+	width: min(560px, 100%);
+	max-height: calc(100dvh - 40px);
+	padding: clamp(22px, 4vw, 34px);
+	overflow: auto;
+	border: 1px solid var(--xpc-border);
+	border-radius: 20px;
+	background: var(--xpc-card);
+	box-shadow: var(--xpc-shadow-lg);
+}
+
+.xpc-gift-heading {
+	display: flex;
+	gap: 20px;
+	align-items: flex-start;
+	justify-content: space-between;
+	margin-bottom: 22px;
+}
+
+.xpc-gift-heading h2 { margin: 0; font-size: clamp(22px, 4vw, 30px); line-height: 1.2; }
+
+.xpc-gift-heading > button {
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	flex: 0 0 auto;
+	padding: 0;
+	border: 0;
+	border-radius: 11px;
+	background: var(--xpc-bg);
+	color: var(--xpc-text);
+	cursor: pointer;
+}
+
+.xpc-gift-panel form { display: grid; gap: 15px; }
+.xpc-gift-panel label { display: grid; gap: 6px; color: var(--xpc-text); font-size: 12px; font-weight: 750; }
+.xpc-gift-panel :is(input, textarea) { width: 100%; min-height: 48px; padding: 11px 13px; border: 1px solid var(--xpc-border); border-radius: 11px; background: var(--xpc-card); color: var(--xpc-text); }
+.xpc-gift-panel textarea { min-height: 100px; resize: vertical; }
+.xpc-gift-panel :is(input, textarea):focus { border-color: var(--xpc-primary); outline: 3px solid rgba(109, 60, 245, 0.13); }
+.xpc-gift-panel form > p { margin: 0; color: var(--xpc-muted); font-size: 11px; }
 
 /* Related courses */
 .xpc-related {

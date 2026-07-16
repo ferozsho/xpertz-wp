@@ -155,25 +155,28 @@
 		});
 	}
 
-	// Locally persisted course wishlist preference.
-	root.querySelectorAll('[data-wishlist-course]').forEach((button) => {
-		const key = `xpertz-wishlist-${button.dataset.wishlistCourse}`;
-		const label = button.querySelector('span');
-		const defaultLabel = label ? label.textContent : '';
-		const updateWishlist = (saved) => {
-			button.setAttribute('aria-pressed', String(saved));
-			if (label) {
-				label.textContent = saved ? config.savedLabel || 'Saved' : defaultLabel;
-			}
-		};
+	// The global commerce layer persists wishlists server-side. Keep a local
+	// fallback only when that layer is unavailable.
+	if (!window.xpertzCommerce) {
+		root.querySelectorAll('[data-wishlist-course]').forEach((button) => {
+			const key = `xpertz-wishlist-${button.dataset.wishlistCourse}`;
+			const label = button.querySelector('span');
+			const defaultLabel = label ? label.textContent : '';
+			const updateWishlist = (saved) => {
+				button.setAttribute('aria-pressed', String(saved));
+				if (label) {
+					label.textContent = saved ? config.savedLabel || 'Saved' : defaultLabel;
+				}
+			};
 
-		updateWishlist(getStoredValue(key) === '1');
-		button.addEventListener('click', () => {
-			const saved = button.getAttribute('aria-pressed') !== 'true';
-			setStoredValue(key, saved ? '1' : '0');
-			updateWishlist(saved);
+			updateWishlist(getStoredValue(key) === '1');
+			button.addEventListener('click', () => {
+				const saved = button.getAttribute('aria-pressed') !== 'true';
+				setStoredValue(key, saved ? '1' : '0');
+				updateWishlist(saved);
+			});
 		});
-	});
+	}
 
 	// Native share sheet with a clipboard fallback.
 	root.querySelectorAll('[data-share-course]').forEach((button) => {
