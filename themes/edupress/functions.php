@@ -178,6 +178,7 @@ function edupress_scripts() {
 	$theme_version = wp_get_theme()->get( 'Version' );
 
 	wp_enqueue_style( 'edupress-style', get_stylesheet_uri(), array(), $theme_version );
+	wp_enqueue_style( 'edupress-custom-design', get_template_directory_uri() . '/custom-design.css', array( 'edupress-style' ), $theme_version );
 
 	wp_enqueue_script(
 		'jquery-superfish',
