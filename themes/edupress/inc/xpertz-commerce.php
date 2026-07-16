@@ -26,25 +26,35 @@ add_action( 'after_setup_theme', 'xpertz_commerce_theme_support', 20 );
 function xpertz_commerce_icon( $name ) {
 	$icons = array(
 		'address'      => '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+		'arrow-right'  => '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
 		'award'        => '<circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/>',
 		'bell'         => '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
 		'book'         => '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/>',
+		'briefcase'    => '<rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16M2 12h20"/>',
 		'cart'         => '<circle cx="9" cy="20" r="1"/><circle cx="19" cy="20" r="1"/><path d="M3 4h2l2.7 10.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6"/>',
+		'check-circle' => '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/>',
 		'chevron-down' => '<path d="m6 9 6 6 6-6"/>',
 		'chevron-right'=> '<path d="m9 18 6-6-6-6"/>',
+		'clock'        => '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
 		'close'        => '<path d="M18 6 6 18M6 6l12 12"/>',
 		'credit-card'  => '<rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>',
 		'dashboard'    => '<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
 		'download'     => '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/>',
+		'graduation'   => '<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
 		'heart'        => '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.9 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8Z"/>',
 		'help'         => '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 1 1 5.8 1c0 2-3 2-3 4M12 18h.01"/>',
+		'layers'       => '<path d="m12.83 2.18 8 4a2 2 0 0 1 0 3.58l-8 4a2 2 0 0 1-1.66 0l-8-4a2 2 0 0 1 0-3.58l8-4a2 2 0 0 1 1.66 0Z"/><path d="m22 12.5-9.17 4.59a2 2 0 0 1-1.66 0L2 12.5M22 17.5l-9.17 4.59a2 2 0 0 1-1.66 0L2 17.5"/>',
 		'login'        => '<path d="M10 17l5-5-5-5M15 12H3"/><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>',
+		'mail'         => '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
 		'menu'         => '<path d="M4 6h16M4 12h16M4 18h16"/>',
 		'orders'       => '<path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M16 3v5h5M8 13h8M8 17h5"/>',
 		'profile'      => '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
 		'search'       => '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
 		'settings'     => '<path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/>',
+		'shield-check' => '<path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3Z"/><path d="m9 12 2 2 4-4"/>',
+		'star'         => '<path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01Z"/>',
 		'ticket'       => '<path d="M2 9a3 3 0 0 0 0 6v4h20v-4a3 3 0 0 0 0-6V5H2Z"/><path d="M13 5v2M13 17v2M13 11v2"/>',
+		'users'        => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
 	);
 
 	if ( ! isset( $icons[ $name ] ) ) {
@@ -174,6 +184,7 @@ function xpertz_commerce_default_navigation() {
 	foreach ( $items as $index => $item ) {
 		printf( '<li><a href="%1$s">%2$s</a></li>', esc_url( $item[1] ), esc_html( $item[0] ) );
 		if ( 1 === $index ) {
+			$categories_url = xpertz_commerce_page_url( 'categories' );
 			$categories = get_terms(
 				array(
 					'taxonomy'   => defined( 'LP_COURSE_CATEGORY_TAX' ) ? LP_COURSE_CATEGORY_TAX : 'course_category',
@@ -182,13 +193,13 @@ function xpertz_commerce_default_navigation() {
 				)
 			);
 			if ( ! is_wp_error( $categories ) && $categories ) {
-				echo '<li class="xhc-has-submenu"><button type="button" aria-expanded="false">' . esc_html__( 'Categories', 'edupress' ) . xpertz_commerce_icon( 'chevron-down' ) . '</button><div class="xhc-category-menu"><span class="xhc-menu-eyebrow">' . esc_html__( 'Explore topics', 'edupress' ) . '</span><ul>';
+				echo '<li class="xhc-has-submenu"><button type="button" aria-expanded="false">' . esc_html__( 'Categories', 'edupress' ) . xpertz_commerce_icon( 'chevron-down' ) . '</button><div class="xhc-category-menu"><span class="xhc-menu-eyebrow">' . esc_html__( 'Explore topics', 'edupress' ) . '</span><ul><li><a class="xhc-category-all" href="' . esc_url( $categories_url ) . '"><span>' . esc_html__( 'All categories', 'edupress' ) . '</span>' . xpertz_commerce_icon( 'arrow-right' ) . '</a></li>';
 				foreach ( $categories as $category ) {
 					printf( '<li><a href="%1$s"><span>%2$s</span><small>%3$s</small></a></li>', esc_url( get_term_link( $category ) ), esc_html( $category->name ), esc_html( sprintf( _n( '%s course', '%s courses', $category->count, 'edupress' ), number_format_i18n( $category->count ) ) ) );
 				}
 				echo '</ul></div></li>';
 			} else {
-				printf( '<li><a href="%1$s">%2$s</a></li>', esc_url( get_post_type_archive_link( 'lp_course' ) ?: xpertz_commerce_page_url( 'courses' ) ), esc_html__( 'Categories', 'edupress' ) );
+				printf( '<li><a href="%1$s">%2$s</a></li>', esc_url( $categories_url ), esc_html__( 'Categories', 'edupress' ) );
 			}
 		}
 	}
@@ -838,6 +849,199 @@ function xpertz_commerce_account_dashboard_intro() {
 	echo '<div class="xhc-account-heading"><span class="xhc-eyebrow">' . esc_html__( 'Learning command center', 'edupress' ) . '</span><h2>' . esc_html( sprintf( __( 'Welcome back, %s', 'edupress' ), wp_get_current_user()->display_name ) ) . '</h2><p>' . esc_html__( 'Resume courses, review purchases, and manage your learning account.', 'edupress' ) . '</p></div><div class="xhc-dashboard-stats"><a href="' . esc_url( wc_get_account_endpoint_url( 'my-courses' ) ) . '">' . xpertz_commerce_icon( 'book' ) . '<strong>' . esc_html( number_format_i18n( $course_count ) ) . '</strong><span>' . esc_html__( 'Active courses', 'edupress' ) . '</span></a><a href="' . esc_url( wc_get_account_endpoint_url( 'orders' ) ) . '">' . xpertz_commerce_icon( 'orders' ) . '<strong>' . esc_html( number_format_i18n( $order_count ) ) . '</strong><span>' . esc_html__( 'Orders', 'edupress' ) . '</span></a><a href="' . esc_url( wc_get_account_endpoint_url( 'wishlist' ) ) . '">' . xpertz_commerce_icon( 'heart' ) . '<strong>' . esc_html( number_format_i18n( $wishlist ) ) . '</strong><span>' . esc_html__( 'Saved courses', 'edupress' ) . '</span></a></div>';
 }
 add_action( 'woocommerce_account_dashboard', 'xpertz_commerce_account_dashboard_intro', 5 );
+
+/**
+ * Return concise supporting copy for managed public pages.
+ *
+ * @param string $slug Page slug.
+ * @return string
+ */
+function xpertz_commerce_page_intro( $slug ) {
+	$descriptions = array(
+		'about'      => __( 'Meet the learning platform built for practical career growth.', 'edupress' ),
+		'blog'       => __( 'Ideas, guides, and perspectives for continuous professional development.', 'edupress' ),
+		'cart'       => __( 'Review your learning plan and continue to secure checkout.', 'edupress' ),
+		'categories' => __( 'Explore focused learning paths designed around the skills professionals use most.', 'edupress' ),
+		'checkout'   => __( 'Complete your purchase securely and start learning immediately.', 'edupress' ),
+		'contact'    => __( 'Connect with learner support for course, account, and purchase questions.', 'edupress' ),
+		'my-account' => __( 'Manage your courses, purchases, profile, and learning progress.', 'edupress' ),
+		'pricing'    => __( 'Simple course pricing with secure payment and lifetime access.', 'edupress' ),
+		'support'    => __( 'Find answers and get direct help from the XPERTZ learner support team.', 'edupress' ),
+		'wishlist'   => __( 'Keep your next learning goals organized in one place.', 'edupress' ),
+	);
+
+	return $descriptions[ $slug ] ?? __( 'Practical learning experiences for ambitious professionals.', 'edupress' );
+}
+
+/**
+ * Use theme-owned, update-safe templates for course and category archives.
+ *
+ * @param string $template Resolved template path.
+ * @return string
+ */
+function xpertz_commerce_catalog_template( $template ) {
+	$taxonomy = defined( 'LP_COURSE_CATEGORY_TAX' ) ? LP_COURSE_CATEGORY_TAX : 'course_category';
+	if ( ! is_post_type_archive( 'lp_course' ) && ! is_tax( $taxonomy ) ) {
+		return $template;
+	}
+
+	$catalog_template = get_theme_file_path( '/archive-lp_course.php' );
+	return file_exists( $catalog_template ) ? $catalog_template : $template;
+}
+add_filter( 'template_include', 'xpertz_commerce_catalog_template', 100 );
+
+/**
+ * Configure the server-rendered course archive query.
+ *
+ * @param WP_Query $query Main WordPress query.
+ */
+function xpertz_commerce_catalog_query( $query ) {
+	$taxonomy = defined( 'LP_COURSE_CATEGORY_TAX' ) ? LP_COURSE_CATEGORY_TAX : 'course_category';
+	if ( is_admin() || ! $query->is_main_query() || ( ! $query->is_post_type_archive( 'lp_course' ) && ! $query->is_tax( $taxonomy ) ) ) {
+		return;
+	}
+
+	$query->set( 'posts_per_page', 12 );
+	$search = isset( $_GET['course_search'] ) && is_string( $_GET['course_search'] ) ? sanitize_text_field( wp_unslash( $_GET['course_search'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only catalog filter.
+	$sort   = isset( $_GET['course_sort'] ) && is_string( $_GET['course_sort'] ) ? sanitize_key( wp_unslash( $_GET['course_sort'] ) ) : 'newest'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only catalog filter.
+
+	if ( $search ) {
+		$query->set( 's', $search );
+	}
+
+	switch ( $sort ) {
+		case 'oldest':
+			$query->set( 'orderby', 'date' );
+			$query->set( 'order', 'ASC' );
+			break;
+		case 'title':
+			$query->set( 'orderby', 'title' );
+			$query->set( 'order', 'ASC' );
+			break;
+		default:
+			$query->set( 'orderby', 'date' );
+			$query->set( 'order', 'DESC' );
+	}
+}
+add_action( 'pre_get_posts', 'xpertz_commerce_catalog_query' );
+
+/**
+ * Render one reusable premium course card.
+ *
+ * @param int $course_id Course post ID.
+ */
+function xpertz_commerce_catalog_course_card( $course_id ) {
+	$course_id = absint( $course_id );
+	if ( ! $course_id || 'lp_course' !== get_post_type( $course_id ) ) {
+		return;
+	}
+
+	$course       = class_exists( '\\LearnPress\\Models\\CourseModel' ) ? \LearnPress\Models\CourseModel::find( $course_id, true ) : false;
+	$legacy       = function_exists( 'learn_press_get_course' ) ? learn_press_get_course( $course_id ) : false;
+	$product_id   = function_exists( 'xpertz_wc_get_product_id_for_course' ) ? xpertz_wc_get_product_id_for_course( $course_id ) : 0;
+	$product      = $product_id && function_exists( 'wc_get_product' ) ? wc_get_product( $product_id ) : false;
+	$categories   = get_the_terms( $course_id, defined( 'LP_COURSE_CATEGORY_TAX' ) ? LP_COURSE_CATEGORY_TAX : 'course_category' );
+	$category     = ! is_wp_error( $categories ) && $categories ? reset( $categories ) : false;
+	$author_id    = (int) get_post_field( 'post_author', $course_id );
+	$instructor   = get_the_author_meta( 'display_name', $author_id ) ?: __( 'XPERTZ Faculty', 'edupress' );
+	$duration     = $course ? $course->get_duration() : '';
+	$lessons      = $course && defined( 'LP_LESSON_CPT' ) ? $course->count_items( LP_LESSON_CPT ) : 0;
+	$students     = $course ? $course->count_students() : 0;
+	$rating       = function_exists( 'xpertz_course_rating_data' ) ? xpertz_course_rating_data( $course_id ) : array( 'average' => 0, 'total' => 0 );
+	$wishlist_ids = xpertz_commerce_wishlist_ids();
+	$is_saved     = in_array( $course_id, $wishlist_ids, true );
+	$price_html   = $product ? $product->get_price_html() : ( $legacy ? $legacy->get_course_price_html() : '' );
+	$permalink    = get_permalink( $course_id );
+	$image        = get_the_post_thumbnail(
+		$course_id,
+		'medium_large',
+		array(
+			'loading'  => 'lazy',
+			'decoding' => 'async',
+			'sizes'    => '(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw',
+		)
+	);
+	?>
+	<article class="xhc-catalog-card">
+		<a class="xhc-catalog-card-image" href="<?php echo esc_url( $permalink ); ?>" tabindex="-1" aria-hidden="true">
+			<?php echo $image ? wp_kses_post( $image ) : xpertz_commerce_icon( 'graduation' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php if ( $category ) : ?><span><?php echo esc_html( $category->name ); ?></span><?php endif; ?>
+		</a>
+		<div class="xhc-catalog-card-body">
+			<?php if ( $category ) : ?><a class="xhc-catalog-category" href="<?php echo esc_url( get_term_link( $category ) ); ?>"><?php echo esc_html( $category->name ); ?></a><?php endif; ?>
+			<h2><a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_html( get_the_title( $course_id ) ); ?></a></h2>
+			<p class="xhc-catalog-instructor"><?php echo esc_html( sprintf( __( 'By %s', 'edupress' ), $instructor ) ); ?></p>
+			<div class="xhc-catalog-rating"><strong><?php echo $rating['total'] ? esc_html( number_format_i18n( $rating['average'], 1 ) ) : esc_html__( 'New', 'edupress' ); ?></strong><?php echo xpertz_commerce_icon( 'star' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><small><?php echo esc_html( sprintf( _n( '%s review', '%s reviews', $rating['total'], 'edupress' ), number_format_i18n( $rating['total'] ) ) ); ?></small></div>
+			<div class="xhc-catalog-meta">
+				<span><?php echo xpertz_commerce_icon( 'clock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo esc_html( $duration ?: __( 'Self-paced', 'edupress' ) ); ?></span>
+				<span><?php echo xpertz_commerce_icon( 'book' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo esc_html( sprintf( _n( '%s lesson', '%s lessons', $lessons, 'edupress' ), number_format_i18n( $lessons ) ) ); ?></span>
+				<span><?php echo xpertz_commerce_icon( 'users' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo esc_html( number_format_i18n( $students ) ); ?></span>
+			</div>
+			<div class="xhc-catalog-card-footer">
+				<strong><?php echo wp_kses_post( $price_html ?: __( 'Free', 'edupress' ) ); ?></strong>
+				<div>
+					<button type="button" class="xhc-catalog-wishlist<?php echo $is_saved ? ' is-saved' : ''; ?>" data-wishlist-course="<?php echo esc_attr( $course_id ); ?>" aria-pressed="<?php echo $is_saved ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr( $is_saved ? __( 'Remove from wishlist', 'edupress' ) : __( 'Add to wishlist', 'edupress' ) ); ?>"><?php echo xpertz_commerce_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></button>
+					<a class="xhc-catalog-cta" href="<?php echo esc_url( $permalink ); ?>"><?php esc_html_e( 'View course', 'edupress' ); ?><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+				</div>
+			</div>
+		</div>
+	</article>
+	<?php
+}
+
+/** Render the public course category directory. */
+function xpertz_commerce_categories_shortcode() {
+	$taxonomy = defined( 'LP_COURSE_CATEGORY_TAX' ) ? LP_COURSE_CATEGORY_TAX : 'course_category';
+	$terms    = get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => true ) );
+	ob_start();
+	?>
+	<section class="xhc-standalone-account xhc-category-directory">
+		<div class="xhc-account-heading"><span class="xhc-eyebrow"><?php esc_html_e( 'Learning paths', 'edupress' ); ?></span><h2><?php esc_html_e( 'Find courses by category', 'edupress' ); ?></h2><p><?php esc_html_e( 'Choose a focused subject area, then compare practical courses built for real-world progress.', 'edupress' ); ?></p></div>
+		<div class="xhc-category-grid">
+			<a class="xhc-category-card is-featured" href="<?php echo esc_url( get_post_type_archive_link( 'lp_course' ) ); ?>"><span><?php echo xpertz_commerce_icon( 'layers' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><div><small><?php esc_html_e( 'Complete catalog', 'edupress' ); ?></small><h3><?php esc_html_e( 'All courses', 'edupress' ); ?></h3><p><?php esc_html_e( 'Browse every available XPERTZ learning experience.', 'edupress' ); ?></p></div><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+			<?php if ( ! is_wp_error( $terms ) ) : ?>
+				<?php foreach ( $terms as $term ) : ?>
+					<a class="xhc-category-card" href="<?php echo esc_url( get_term_link( $term ) ); ?>"><span><?php echo xpertz_commerce_icon( 'briefcase' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><div><small><?php echo esc_html( sprintf( _n( '%s course', '%s courses', $term->count, 'edupress' ), number_format_i18n( $term->count ) ) ); ?></small><h3><?php echo esc_html( $term->name ); ?></h3><p><?php echo esc_html( $term->description ?: __( 'Build practical skills with focused expert-led training.', 'edupress' ) ); ?></p></div><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</div>
+	</section>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'xpertz_course_categories', 'xpertz_commerce_categories_shortcode' );
+
+/** Render the branded About page content. */
+function xpertz_commerce_about_shortcode() {
+	$course_count  = (int) ( wp_count_posts( 'lp_course' )->publish ?? 0 );
+	$user_counts   = count_users();
+	$learner_count = array_sum( array_intersect_key( $user_counts['avail_roles'], array_flip( array( 'subscriber', 'customer', 'lp_student' ) ) ) );
+	ob_start();
+	?>
+	<section class="xhc-standalone-account xhc-about-page">
+		<div class="xhc-about-lead"><div><span class="xhc-eyebrow"><?php esc_html_e( 'Built for forward motion', 'edupress' ); ?></span><h2><?php esc_html_e( 'Practical learning for meaningful career growth', 'edupress' ); ?></h2></div><p><?php esc_html_e( 'XPERTZ brings expert-led courses, clear learning paths, and secure access together in one focused platform. Every experience is designed to help professionals turn knowledge into capability.', 'edupress' ); ?></p></div>
+		<div class="xhc-about-stats"><div><strong><?php echo esc_html( number_format_i18n( $course_count ) ); ?>+</strong><span><?php esc_html_e( 'Focused courses', 'edupress' ); ?></span></div><div><strong><?php echo esc_html( number_format_i18n( $learner_count ) ); ?>+</strong><span><?php esc_html_e( 'Registered learners', 'edupress' ); ?></span></div><div><strong>24/7</strong><span><?php esc_html_e( 'Learning access', 'edupress' ); ?></span></div></div>
+		<div class="xhc-value-grid"><article><span><?php echo xpertz_commerce_icon( 'briefcase' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Career-relevant', 'edupress' ); ?></h3><p><?php esc_html_e( 'Focused content helps learners build capabilities they can apply in real professional settings.', 'edupress' ); ?></p></article><article><span><?php echo xpertz_commerce_icon( 'check-circle' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Structured clearly', 'edupress' ); ?></h3><p><?php esc_html_e( 'Thoughtful lessons, quizzes, and progress tracking make every next step easy to understand.', 'edupress' ); ?></p></article><article><span><?php echo xpertz_commerce_icon( 'shield-check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Designed with trust', 'edupress' ); ?></h3><p><?php esc_html_e( 'Secure purchasing, reliable access, and learner-first support are built into the experience.', 'edupress' ); ?></p></article></div>
+		<div class="xhc-page-cta"><div><span class="xhc-eyebrow"><?php esc_html_e( 'Start your next chapter', 'edupress' ); ?></span><h2><?php esc_html_e( 'Choose the skill you want to build next.', 'edupress' ); ?></h2></div><a class="xhc-primary-link" href="<?php echo esc_url( get_post_type_archive_link( 'lp_course' ) ); ?>"><?php esc_html_e( 'Explore courses', 'edupress' ); ?><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a></div>
+	</section>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'xpertz_about', 'xpertz_commerce_about_shortcode' );
+
+/** Render a distinct public Contact page. */
+function xpertz_commerce_contact_shortcode() {
+	$account_url = function_exists( 'wc_get_account_endpoint_url' ) && is_user_logged_in() ? wc_get_account_endpoint_url( 'support' ) : wc_get_page_permalink( 'myaccount' );
+	ob_start();
+	?>
+	<section class="xhc-standalone-account xhc-contact-page">
+		<div class="xhc-contact-panel"><div><span class="xhc-eyebrow"><?php esc_html_e( 'Learner-first assistance', 'edupress' ); ?></span><h2><?php esc_html_e( 'Let’s solve it together', 'edupress' ); ?></h2><p><?php esc_html_e( 'For the fastest response, sign in and send a support ticket with your course or order details.', 'edupress' ); ?></p><a class="xhc-primary-link" href="<?php echo esc_url( $account_url ); ?>"><?php esc_html_e( 'Contact learner support', 'edupress' ); ?><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a></div><span class="xhc-contact-visual"><?php echo xpertz_commerce_icon( 'mail' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span></div>
+		<div class="xhc-value-grid"><article><span><?php echo xpertz_commerce_icon( 'ticket' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Course and order help', 'edupress' ); ?></h3><p><?php esc_html_e( 'Include the course title or order number so the support team can respond efficiently.', 'edupress' ); ?></p></article><article><span><?php echo xpertz_commerce_icon( 'profile' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Account access', 'edupress' ); ?></h3><p><?php esc_html_e( 'Get assistance with registration, sign-in, learning access, and profile settings.', 'edupress' ); ?></p></article><article><span><?php echo xpertz_commerce_icon( 'help' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'General questions', 'edupress' ); ?></h3><p><?php esc_html_e( 'Ask about course content, certificates, pricing, or choosing your next learning path.', 'edupress' ); ?></p></article></div>
+	</section>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'xpertz_contact', 'xpertz_commerce_contact_shortcode' );
 
 /**
  * Render the public course pricing catalog.

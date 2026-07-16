@@ -2,26 +2,27 @@
 /**
  * Plugin Name: XPERTZ WooCommerce LearnPress Integration
  * Description: Uses WooCommerce as the commerce engine for LearnPress courses and enrolls paid learners automatically.
- * Version: 2.2.0
+ * Version: 2.2.1
  * Requires Plugins: woocommerce, learnpress
  * Text Domain: xpertz-commerce
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'XPERTZ_WC_LP_VERSION', '2.2.0' );
+define( 'XPERTZ_WC_LP_VERSION', '2.2.1' );
 
 /**
  * Create the public LMS pages used by the global navigation.
  */
 function xpertz_wc_lp_provision_pages() {
 	$pages = array(
-		'pricing'  => array( __( 'Pricing', 'xpertz-commerce' ), '[xpertz_course_pricing]' ),
-		'about'    => array( __( 'About XPERTZ', 'xpertz-commerce' ), '<!-- wp:paragraph --><p>' . esc_html__( 'XPERTZ helps professionals build practical, in-demand skills through focused expert-led learning.', 'xpertz-commerce' ) . '</p><!-- /wp:paragraph -->' ),
-		'blog'     => array( __( 'XPERTZ Insights', 'xpertz-commerce' ), '[xpertz_blog_index]' ),
-		'support'  => array( __( 'Learning Support', 'xpertz-commerce' ), '[xpertz_support_landing]' ),
-		'contact'  => array( __( 'Contact XPERTZ', 'xpertz-commerce' ), '[xpertz_support_landing]' ),
-		'wishlist' => array( __( 'My Wishlist', 'xpertz-commerce' ), '[xpertz_wishlist]' ),
+		'categories' => array( __( 'Course Categories', 'xpertz-commerce' ), '[xpertz_course_categories]' ),
+		'pricing'    => array( __( 'Pricing', 'xpertz-commerce' ), '[xpertz_course_pricing]' ),
+		'about'      => array( __( 'About XPERTZ', 'xpertz-commerce' ), '[xpertz_about]' ),
+		'blog'       => array( __( 'XPERTZ Insights', 'xpertz-commerce' ), '[xpertz_blog_index]' ),
+		'support'    => array( __( 'Learning Support', 'xpertz-commerce' ), '[xpertz_support_landing]' ),
+		'contact'    => array( __( 'Contact XPERTZ', 'xpertz-commerce' ), '[xpertz_contact]' ),
+		'wishlist'   => array( __( 'My Wishlist', 'xpertz-commerce' ), '[xpertz_wishlist]' ),
 	);
 
 	foreach ( $pages as $slug => $page_data ) {
@@ -40,8 +41,62 @@ function xpertz_wc_lp_provision_pages() {
 			$page = is_wp_error( $page_id ) ? false : get_post( $page_id );
 		}
 
-		if ( 'blog' === $slug && $page && '' === trim( (string) $page->post_content ) ) {
-			wp_update_post( array( 'ID' => $page->ID, 'post_content' => '[xpertz_blog_index]' ) );
+		if ( ! $page ) {
+			continue;
+		}
+
+		$current_content = trim( (string) $page->post_content );
+		$can_refresh     = '' === $current_content
+			|| ( 'about' === $slug && false !== strpos( $current_content, 'XPERTZ helps professionals build practical' ) )
+			|| ( 'contact' === $slug && '[xpertz_support_landing]' === $current_content );
+
+		if ( $can_refresh && $current_content !== $page_data[1] ) {
+			wp_update_post( array( 'ID' => $page->ID, 'post_content' => $page_data[1] ) );
+		}
+	}
+}
+
+/**
+ * Ensure the catalog has a useful initial category instead of linking the
+ * Categories navigation item back to the unfiltered course archive.
+ */
+function xpertz_wc_lp_provision_course_categories() {
+	$taxonomy = defined( 'LP_COURSE_CATEGORY_TAX' ) ? LP_COURSE_CATEGORY_TAX : 'course_category';
+	if ( ! taxonomy_exists( $taxonomy ) ) {
+		return;
+	}
+
+	$term = term_exists( 'professional-development', $taxonomy );
+	if ( ! $term ) {
+		$term = wp_insert_term(
+			__( 'Professional Development', 'xpertz-commerce' ),
+			$taxonomy,
+			array(
+				'description' => __( 'Practical courses for career growth, leadership, and workplace capability.', 'xpertz-commerce' ),
+				'slug'        => 'professional-development',
+			)
+		);
+	}
+
+	if ( is_wp_error( $term ) ) {
+		return;
+	}
+
+	$term_id    = (int) ( is_array( $term ) ? $term['term_id'] : $term );
+	$course_ids = get_posts(
+		array(
+			'post_type'      => 'lp_course',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+
+	foreach ( $course_ids as $course_id ) {
+		$assigned = wp_get_object_terms( $course_id, $taxonomy, array( 'fields' => 'ids' ) );
+		if ( ! is_wp_error( $assigned ) && ! $assigned ) {
+			wp_set_object_terms( $course_id, array( $term_id ), $taxonomy );
 		}
 	}
 }
@@ -64,6 +119,7 @@ function xpertz_wc_lp_activate() {
 	update_option( 'woocommerce_enable_myaccount_registration', 'yes' );
 	update_option( 'woocommerce_enable_signup_and_login_from_checkout', 'yes' );
 	xpertz_wc_lp_provision_pages();
+	xpertz_wc_lp_provision_course_categories();
 	update_option( 'xpertz_wc_lp_flush_rewrites', 1, false );
 	update_option( 'xpertz_wc_lp_version', XPERTZ_WC_LP_VERSION );
 }

@@ -1,17 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
-
 :root {
-    --font-primary: 'Outfit', sans-serif;
-    --primary-color: hsl(245, 75%, 60%);
-    --primary-gradient: linear-gradient(135deg, hsl(245, 75%, 60%), hsl(265, 80%, 55%));
-    --dark-bg: hsl(240, 20%, 8%);
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --primary-color: #6d3cf5;
+    --primary-gradient: linear-gradient(135deg, #6d3cf5, #5424d6);
+    --dark-bg: #10152d;
     --card-bg: hsl(0, 0%, 100%);
-    --accent-teal: hsl(172, 80%, 45%);
-    --text-main: hsl(220, 20%, 20%);
-    --text-muted: hsl(220, 15%, 55%);
-    --border-radius: 12px;
-    --shadow-soft: 0 8px 30px rgba(0,0,0,0.06);
-    --shadow-hover: 0 20px 40px rgba(0,0,0,0.12);
+    --accent-teal: #6eb8ff;
+    --text-main: #111827;
+    --text-muted: #657084;
+    --border-radius: 16px;
+    --shadow-soft: 0 12px 34px rgba(19, 25, 58, 0.09);
+    --shadow-hover: 0 24px 54px rgba(10, 14, 35, 0.16);
 }
 
 body {

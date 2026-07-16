@@ -1,162 +1,77 @@
 <?php
 /**
- * Custom Premium Homepage Template for EduPress
+ * Premium XPERTZ learning platform homepage.
+ *
+ * @package EduPress
  */
 
 get_header();
 
-// Fetch live counts dynamically from the database
-$count_users = count_users();
-$student_count = $count_users['avail_roles']['subscriber'] ?? 48;
-$teacher_count = $count_users['avail_roles']['lp_teacher'] ?? 5;
-$course_count  = wp_count_posts( 'lp_course' )->publish ?? 10;
+$user_counts    = count_users();
+$course_count   = (int) ( wp_count_posts( 'lp_course' )->publish ?? 0 );
+$learner_count  = array_sum( array_intersect_key( $user_counts['avail_roles'], array_flip( array( 'subscriber', 'customer', 'lp_student' ) ) ) );
+$teacher_count  = (int) ( $user_counts['avail_roles']['lp_teacher'] ?? 0 );
+$catalog_url    = get_post_type_archive_link( 'lp_course' ) ?: home_url( '/courses/' );
+$categories_url = function_exists( 'xpertz_commerce_page_url' ) ? xpertz_commerce_page_url( 'categories' ) : home_url( '/categories/' );
 ?>
 
-<!-- Hero Section -->
-<section class="premium-hero">
-    <div class="wrapper">
-        <h1>Unlock Your Future with <span>Advanced Learning</span></h1>
-        <p class="tagline">Explore immersive courses, learn from top industry experts, and advance your career with our state-of-the-art educational catalog.</p>
-        <div class="cta-buttons">
-            <a href="<?php echo esc_url( home_url( '/courses/' ) ); ?>" class="cta-primary">Browse All Courses</a>
-            <a href="#benefits" class="cta-secondary">Why Choose Us</a>
-        </div>
-    </div>
-</section>
+<main id="site-main" class="xhc-home">
+	<section class="xhc-home-hero">
+		<div class="xhc-container xhc-home-hero-grid">
+			<div class="xhc-home-hero-copy">
+				<span class="xhc-home-eyebrow"><?php echo xpertz_commerce_icon( 'graduation' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php esc_html_e( 'Practical learning. Real momentum.', 'edupress' ); ?></span>
+				<h1><?php esc_html_e( 'Build skills that move your', 'edupress' ); ?> <span><?php esc_html_e( 'career forward', 'edupress' ); ?></span></h1>
+				<p><?php esc_html_e( 'Learn from focused, expert-led courses with clear progress tracking, secure enrollment, and lifetime access from any device.', 'edupress' ); ?></p>
+				<div class="xhc-home-actions"><a class="xhc-home-primary" href="<?php echo esc_url( $catalog_url ); ?>"><?php esc_html_e( 'Explore all courses', 'edupress' ); ?><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a><a class="xhc-home-secondary" href="<?php echo esc_url( $categories_url ); ?>"><?php esc_html_e( 'Browse categories', 'edupress' ); ?></a></div>
+				<ul class="xhc-home-trust"><li><?php echo xpertz_commerce_icon( 'check-circle' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php esc_html_e( 'Lifetime access', 'edupress' ); ?></li><li><?php echo xpertz_commerce_icon( 'shield-check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php esc_html_e( 'Secure checkout', 'edupress' ); ?></li><li><?php echo xpertz_commerce_icon( 'award' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php esc_html_e( 'Completion progress', 'edupress' ); ?></li></ul>
+			</div>
 
-<!-- Stats Dashboard -->
-<section class="premium-stats">
-    <div class="stats-grid">
-        <div class="stat-item">
-            <div class="stat-number"><?php echo esc_html( $course_count ); ?>+</div>
-            <div class="stat-label">Premium Courses</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number"><?php echo esc_html( $student_count ); ?>+</div>
-            <div class="stat-label">Active Students</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number"><?php echo esc_html( $teacher_count ); ?>+</div>
-            <div class="stat-label">Expert Teachers</div>
-        </div>
-    </div>
-</section>
+			<aside class="xhc-home-hero-panel" aria-label="<?php esc_attr_e( 'Learning experience highlights', 'edupress' ); ?>">
+				<div class="xhc-home-panel-top"><span><?php echo xpertz_commerce_icon( 'layers' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><div><small><?php esc_html_e( 'Your learning workspace', 'edupress' ); ?></small><strong><?php esc_html_e( 'Simple, focused, measurable', 'edupress' ); ?></strong></div></div>
+				<div class="xhc-home-progress-card"><div><span><?php esc_html_e( 'Course progress', 'edupress' ); ?></span><strong>72%</strong></div><i><span></span></i><small><?php esc_html_e( 'Continue exactly where you left off', 'edupress' ); ?></small></div>
+				<div class="xhc-home-panel-grid"><article><span><?php echo xpertz_commerce_icon( 'book' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><strong><?php esc_html_e( 'Structured lessons', 'edupress' ); ?></strong><small><?php esc_html_e( 'Clear next steps', 'edupress' ); ?></small></article><article><span><?php echo xpertz_commerce_icon( 'award' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><strong><?php esc_html_e( 'Track progress', 'edupress' ); ?></strong><small><?php esc_html_e( 'Stay motivated', 'edupress' ); ?></small></article></div>
+				<div class="xhc-home-panel-note"><?php echo xpertz_commerce_icon( 'users' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><strong><?php esc_html_e( 'Learn at your pace', 'edupress' ); ?></strong><small><?php esc_html_e( 'Desktop, tablet, and mobile ready', 'edupress' ); ?></small></span></div>
+			</aside>
+		</div>
+	</section>
 
-<!-- Featured Courses Grid -->
-<section class="home-section">
-    <div class="courses-container">
-        <div class="section-title">
-            <h2>Explore Featured Courses</h2>
-            <p>Start learning today with our high-quality premium training courses, structured for career progression.</p>
-        </div>
-        
-        <div class="courses-grid">
-            <?php
-            $args = array(
-                'post_type'      => 'lp_course',
-                'posts_per_page' => 6,
-                'post_status'    => 'publish'
-            );
-            $query = new WP_Query( $args );
-            
-            if ( $query->have_posts() ) :
-                while ( $query->have_posts() ) : $query->the_post();
-                    $course_id = get_the_ID();
-                    $instructor_name = get_the_author();
-                    
-                    // Price/WooCommerce Integration
-                    $product_id = get_post_meta( $course_id, '_related_woocommerce_product_id', true );
-                    $price_display = 'Free';
-                    if ( $product_id ) {
-                        $product = wc_get_product( $product_id );
-                        if ( $product ) {
-                            $price_display = wc_price( $product->get_price() );
-                        }
-                    }
-                    ?>
-                    <div class="course-card">
-                        <div class="course-card-image">
-                            <span class="badge">Course</span>
-                            <?php if ( has_post_thumbnail() ) : ?>
-                                <?php the_post_thumbnail( 'medium' ); ?>
-                            <?php else : ?>
-                                <span><?php the_title(); ?></span>
-                            <?php endif; ?>
-                        </div>
-                        <div class="course-card-content">
-                            <h3 class="course-card-title">
-                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                            </h3>
-                            <div class="course-card-meta">
-                                <span class="course-card-instructor">By <?php echo esc_html( $instructor_name ); ?></span>
-                                <span class="course-card-price"><?php echo $price_display; ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
-                endwhile;
-                wp_reset_postdata();
-            else :
-                ?>
-                <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No courses found. Please add courses in the WordPress admin.</p>
-                <?php
-            endif;
-            ?>
-        </div>
-    </div>
-</section>
+	<section class="xhc-home-stats" aria-label="<?php esc_attr_e( 'Platform statistics', 'edupress' ); ?>">
+		<div class="xhc-container"><div><strong><?php echo esc_html( number_format_i18n( $course_count ) ); ?>+</strong><span><?php esc_html_e( 'Practical courses', 'edupress' ); ?></span></div><div><strong><?php echo esc_html( number_format_i18n( $learner_count ) ); ?>+</strong><span><?php esc_html_e( 'Registered learners', 'edupress' ); ?></span></div><div><strong><?php echo esc_html( number_format_i18n( max( 1, $teacher_count ) ) ); ?>+</strong><span><?php esc_html_e( 'Expert instructors', 'edupress' ); ?></span></div><div><strong>24/7</strong><span><?php esc_html_e( 'Course access', 'edupress' ); ?></span></div></div>
+	</section>
 
-<!-- Benefits Section -->
-<section id="benefits" class="home-section" style="background-color: #ffffff; border-top: 1px solid rgba(0,0,0,0.02);">
-    <div class="section-title">
-        <h2>Why Choose Our Platform?</h2>
-        <p>Built from the ground up to offer the most immersive, flexible, and comprehensive learning experiences.</p>
-    </div>
-    
-    <div class="benefits-grid">
-        <div class="benefit-card">
-            <div class="benefit-icon">🎓</div>
-            <h3>Expert Instructors</h3>
-            <p>Our educators are active industry professionals with years of hands-on technical experience.</p>
-        </div>
-        <div class="benefit-card">
-            <div class="benefit-icon">⚡</div>
-            <h3>Flexible Learning</h3>
-            <p>Study at your own pace from anywhere in the world on desktop, tablet, or mobile devices.</p>
-        </div>
-        <div class="benefit-card">
-            <div class="benefit-icon">🏆</div>
-            <h3>WooCommerce Payments</h3>
-            <p>Secure checkout and immediate course enrollment powered by the WooCommerce billing platform.</p>
-        </div>
-    </div>
-</section>
+	<section class="xhc-home-section xhc-featured-courses">
+		<div class="xhc-container">
+			<div class="xhc-section-heading"><div><span class="xhc-eyebrow"><?php esc_html_e( 'Featured learning', 'edupress' ); ?></span><h2><?php esc_html_e( 'Start building your next skill', 'edupress' ); ?></h2><p><?php esc_html_e( 'Choose from focused courses built to be practical, approachable, and easy to continue.', 'edupress' ); ?></p></div><a href="<?php echo esc_url( $catalog_url ); ?>"><?php esc_html_e( 'View all courses', 'edupress' ); ?><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a></div>
+			<div class="xhc-catalog-grid">
+				<?php
+				$featured_courses = new WP_Query(
+					array(
+						'post_type'           => 'lp_course',
+						'post_status'         => 'publish',
+						'posts_per_page'      => 6,
+						'ignore_sticky_posts' => true,
+						'no_found_rows'       => true,
+					)
+				);
+				while ( $featured_courses->have_posts() ) {
+					$featured_courses->the_post();
+					xpertz_commerce_catalog_course_card( get_the_ID() );
+				}
+				wp_reset_postdata();
+				?>
+			</div>
+		</div>
+	</section>
 
-<!-- Testimonials Section -->
-<section class="home-section" style="background-color: #f7f9fc;">
-    <div class="section-title">
-        <h2>What Our Students Say</h2>
-        <p>Real reviews from learners who successfully accelerated their technical careers.</p>
-    </div>
-    
-    <div class="benefits-grid">
-        <div class="benefit-card" style="box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-            <p style="font-style: italic; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">"The integration is incredibly seamless. I bought the course via WooCommerce checkout and was immediately enrolled with full curriculum access. Highly recommended!"</p>
-            <h4 style="margin: 0; font-size: 16px;">Alex Rivera</h4>
-            <span style="font-size: 13px; color: var(--text-muted);">Student</span>
-        </div>
-        <div class="benefit-card" style="box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-            <p style="font-style: italic; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">"The course structure is so easy to follow, and the quiz attempts and lesson completions track very nicely in my user dashboard page."</p>
-            <h4 style="margin: 0; font-size: 16px;">Jordan Miller</h4>
-            <span style="font-size: 13px; color: var(--text-muted);">Student</span>
-        </div>
-        <div class="benefit-card" style="box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-            <p style="font-style: italic; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">"Perfect LMS platform. The WooCommerce checkout and payment system are fast, and the dashboard provides excellent visibility into student progress."</p>
-            <h4 style="margin: 0; font-size: 16px;">Casey Chen</h4>
-            <span style="font-size: 13px; color: var(--text-muted);">Student</span>
-        </div>
-    </div>
-</section>
+	<section class="xhc-home-section xhc-home-benefits">
+		<div class="xhc-container">
+			<div class="xhc-section-heading is-centered"><div><span class="xhc-eyebrow"><?php esc_html_e( 'Designed around learners', 'edupress' ); ?></span><h2><?php esc_html_e( 'Everything you need to keep moving', 'edupress' ); ?></h2><p><?php esc_html_e( 'A cohesive learning experience from course discovery through completion.', 'edupress' ); ?></p></div></div>
+			<div class="xhc-value-grid"><article><span><?php echo xpertz_commerce_icon( 'briefcase' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Career-focused content', 'edupress' ); ?></h3><p><?php esc_html_e( 'Practical course structures connect learning with real professional capability.', 'edupress' ); ?></p></article><article><span><?php echo xpertz_commerce_icon( 'clock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Flexible by design', 'edupress' ); ?></h3><p><?php esc_html_e( 'Study at your pace and return to your learning from any supported device.', 'edupress' ); ?></p></article><article><span><?php echo xpertz_commerce_icon( 'shield-check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><h3><?php esc_html_e( 'Reliable enrollment', 'edupress' ); ?></h3><p><?php esc_html_e( 'Secure WooCommerce checkout provides immediate access after successful payment.', 'edupress' ); ?></p></article></div>
+		</div>
+	</section>
+
+	<section class="xhc-home-cta"><div class="xhc-container"><div><span class="xhc-home-eyebrow"><?php echo xpertz_commerce_icon( 'graduation' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php esc_html_e( 'Your next skill starts here', 'edupress' ); ?></span><h2><?php esc_html_e( 'Turn learning into forward momentum.', 'edupress' ); ?></h2><p><?php esc_html_e( 'Explore the catalog and choose a course that matches your next professional goal.', 'edupress' ); ?></p></div><a class="xhc-home-primary" href="<?php echo esc_url( $catalog_url ); ?>"><?php esc_html_e( 'Browse courses', 'edupress' ); ?><?php echo xpertz_commerce_icon( 'arrow-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a></div></section>
+</main>
 
 <?php
 get_footer();
