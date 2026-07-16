@@ -218,6 +218,11 @@ require get_template_directory() . '/inc/template-tags.php';
 require get_template_directory() . '/inc/customizer.php';
 
 /**
+ * XPERTZ premium LearnPress course experience.
+ */
+require get_template_directory() . '/inc/xpertz-course.php';
+
+/**
  * Modifies tag cloud widget arguments to have all tags in the widget same font size.
  *
  * @since EduPress 1.0
