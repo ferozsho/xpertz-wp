@@ -38,3 +38,5 @@ uploads/
 
 # NOTE: themes/ and plugins/ are intentionally tracked in Git.
 # Add your custom theme/plugin folders there and commit them.
+
+mcp.json
