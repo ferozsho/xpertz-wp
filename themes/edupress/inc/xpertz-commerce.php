@@ -669,6 +669,48 @@ function xpertz_commerce_account_menu_items( $items ) {
 add_filter( 'woocommerce_account_menu_items', 'xpertz_commerce_account_menu_items' );
 
 /**
+ * Add consistent headings to WooCommerce's core account endpoints.
+ *
+ * @param string $endpoint_value Current endpoint value, when available.
+ */
+function xpertz_commerce_account_core_heading( $endpoint_value = '' ) {
+	$headings = array(
+		'woocommerce_account_orders_endpoint'             => array( __( 'Purchase history', 'edupress' ), __( 'Orders', 'edupress' ), __( 'Review course purchases, payment status, and order details.', 'edupress' ) ),
+		'woocommerce_account_view-order_endpoint'          => array( __( 'Purchase details', 'edupress' ), __( 'Order details', 'edupress' ), __( 'Review the items, totals, and status for this purchase.', 'edupress' ) ),
+		'woocommerce_account_downloads_endpoint'          => array( __( 'Your resources', 'edupress' ), __( 'Downloads', 'edupress' ), __( 'Access downloadable files included with your purchases.', 'edupress' ) ),
+		'woocommerce_account_payment-methods_endpoint'     => array( __( 'Secure payments', 'edupress' ), __( 'Payment Methods', 'edupress' ), __( 'Manage the payment options saved to your account.', 'edupress' ) ),
+		'woocommerce_account_add-payment-method_endpoint'  => array( __( 'Secure payments', 'edupress' ), __( 'Add a payment method', 'edupress' ), __( 'Save a payment option for a faster checkout experience.', 'edupress' ) ),
+		'woocommerce_account_edit-account_endpoint'       => array( __( 'Personal profile', 'edupress' ), __( 'Account Details', 'edupress' ), __( 'Update your name, email address, display name, and password.', 'edupress' ) ),
+	);
+
+	$hook = current_filter();
+	if ( 'woocommerce_account_edit-address_endpoint' === $hook ) {
+		$address_type = sanitize_key( (string) $endpoint_value );
+		if ( in_array( $address_type, array( 'billing', 'shipping' ), true ) ) {
+			/* translators: %s: billing or shipping address type. */
+			$title = sprintf( __( 'Edit %s address', 'edupress' ), $address_type );
+			$headings[ $hook ] = array( __( 'Checkout details', 'edupress' ), $title, __( 'Keep your contact and delivery information accurate.', 'edupress' ) );
+		} else {
+			$headings[ $hook ] = array( __( 'Checkout details', 'edupress' ), __( 'Addresses', 'edupress' ), __( 'Manage the billing and delivery information used at checkout.', 'edupress' ) );
+		}
+	}
+
+	if ( empty( $headings[ $hook ] ) ) {
+		return;
+	}
+
+	list( $eyebrow, $title, $description ) = $headings[ $hook ];
+	echo '<div class="xhc-account-heading xhc-account-core-heading"><span class="xhc-eyebrow">' . esc_html( $eyebrow ) . '</span><h2>' . esc_html( $title ) . '</h2><p>' . esc_html( $description ) . '</p></div>';
+}
+add_action( 'woocommerce_account_orders_endpoint', 'xpertz_commerce_account_core_heading', 5 );
+add_action( 'woocommerce_account_view-order_endpoint', 'xpertz_commerce_account_core_heading', 5 );
+add_action( 'woocommerce_account_downloads_endpoint', 'xpertz_commerce_account_core_heading', 5 );
+add_action( 'woocommerce_account_edit-address_endpoint', 'xpertz_commerce_account_core_heading', 5 );
+add_action( 'woocommerce_account_payment-methods_endpoint', 'xpertz_commerce_account_core_heading', 5 );
+add_action( 'woocommerce_account_add-payment-method_endpoint', 'xpertz_commerce_account_core_heading', 5 );
+add_action( 'woocommerce_account_edit-account_endpoint', 'xpertz_commerce_account_core_heading', 5 );
+
+/**
  * Query course IDs belonging to a learner.
  *
  * @param int  $user_id User ID.
