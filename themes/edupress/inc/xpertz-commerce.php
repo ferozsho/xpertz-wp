@@ -899,6 +899,14 @@ add_action( 'woocommerce_account_dashboard', 'xpertz_commerce_account_dashboard_
  * @return string
  */
 function xpertz_commerce_page_intro( $slug ) {
+	if ( 'checkout' === $slug && function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-pay' ) ) {
+		return __( 'Review your order and complete payment securely to activate your course access.', 'edupress' );
+	}
+
+	if ( 'checkout' === $slug && function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
+		return __( 'Your purchase is confirmed. Review your order and continue to your learning dashboard.', 'edupress' );
+	}
+
 	$descriptions = array(
 		'about'      => __( 'Meet the learning platform built for practical career growth.', 'edupress' ),
 		'blog'       => __( 'Ideas, guides, and perspectives for continuous professional development.', 'edupress' ),
@@ -1182,6 +1190,21 @@ function xpertz_commerce_page_context( $content ) {
 		return $context . $content;
 	}
 
+	if ( function_exists( 'is_checkout' ) && is_checkout() && function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-pay' ) ) {
+		$order_id    = absint( get_query_var( 'order-pay' ) );
+		$order       = $order_id ? wc_get_order( $order_id ) : false;
+		$order_label = $order ? sprintf( '#%s', $order->get_order_number() ) : '';
+		$amount      = $order ? $order->get_formatted_order_total() : '';
+		if ( $order ) {
+			/* translators: %s: order number including the leading hash symbol. */
+			$context_title = sprintf( __( 'Complete payment for order %s', 'edupress' ), $order_label );
+		} else {
+			$context_title = __( 'Complete payment', 'edupress' );
+		}
+		$context = '<div class="xhc-commerce-context xhc-checkout-context xhc-order-pay-context"><div>' . xpertz_commerce_icon( 'credit-card' ) . '<span><strong>' . esc_html( $context_title ) . '</strong><small>' . esc_html__( 'Your course access activates as soon as payment is confirmed.', 'edupress' ) . '</small></span></div><span><small>' . esc_html__( 'Amount due', 'edupress' ) . '</small><strong>' . wp_kses_post( $amount ) . '</strong></span></div>';
+		return $context . $content;
+	}
+
 	if ( function_exists( 'is_checkout' ) && is_checkout() && ! is_order_received_page() ) {
 		$context = '<div class="xhc-commerce-context xhc-checkout-context"><div>' . xpertz_commerce_icon( 'award' ) . '<span><strong>' . esc_html__( 'Complete your enrollment', 'edupress' ) . '</strong><small>' . esc_html__( 'Your course appears in My Courses as soon as payment succeeds.', 'edupress' ) . '</small></span></div><span>' . esc_html__( 'Secure checkout', 'edupress' ) . '</span></div>';
 		return $context . $content;
@@ -1190,6 +1213,46 @@ function xpertz_commerce_page_context( $content ) {
 	return $content;
 }
 add_filter( 'the_content', 'xpertz_commerce_page_context', 20 );
+
+/** Add a semantic heading to WooCommerce's native order payment form. */
+function xpertz_commerce_order_pay_heading() {
+	echo '<div class="xhc-order-pay-heading"><span class="xhc-order-pay-heading-icon">' . xpertz_commerce_icon( 'shield-check' ) . '</span><div><span class="xhc-eyebrow">' . esc_html__( 'Secure checkout', 'edupress' ) . '</span><h2>' . esc_html__( 'Payment method', 'edupress' ) . '</h2><p>' . esc_html__( 'Choose how you would like to complete this purchase.', 'edupress' ) . '</p></div></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG icon is generated from a fixed internal allowlist.
+}
+add_action( 'woocommerce_pay_order_before_payment', 'xpertz_commerce_order_pay_heading', 10 );
+
+/**
+ * Render the branded confirmation banner above a successful order summary.
+ *
+ * @param int $order_id Order ID.
+ */
+function xpertz_commerce_order_confirmation_banner( $order_id ) {
+	$order = wc_get_order( $order_id );
+	if ( ! $order || $order->has_status( 'failed' ) ) {
+		return;
+	}
+
+	$is_confirmed  = $order->is_paid() || $order->has_status( array( 'processing', 'completed' ) );
+	$first_name    = $order->get_billing_first_name();
+	/* translators: %s: customer first name. */
+	$title         = $first_name
+		? sprintf( __( 'Thank you, %s!', 'edupress' ), $first_name )
+		: __( 'Your order has been received', 'edupress' );
+	$description   = $is_confirmed
+		? __( 'Payment is confirmed and your course access is ready from your learning dashboard.', 'edupress' )
+		: __( 'We are processing your payment and will activate course access as soon as it is confirmed.', 'edupress' );
+	$courses_url   = is_user_logged_in()
+		? wc_get_account_endpoint_url( 'my-courses' )
+		: ( get_post_type_archive_link( 'lp_course' ) ?: home_url( '/courses/' ) );
+	$courses_label = is_user_logged_in() ? __( 'Go to My Courses', 'edupress' ) : __( 'Browse courses', 'edupress' );
+	$account_url   = wc_get_page_permalink( 'myaccount' );
+	$banner_class  = $is_confirmed ? 'is-confirmed' : 'is-pending';
+	$banner_icon   = $is_confirmed ? 'check-circle' : 'clock';
+	/* translators: %s: order number. */
+	$order_label   = sprintf( __( 'Order #%s', 'edupress' ), $order->get_order_number() );
+
+	echo '<section class="xhc-order-success ' . esc_attr( $banner_class ) . '" role="status"><span class="xhc-order-success-icon">' . xpertz_commerce_icon( $banner_icon ) . '</span><div class="xhc-order-success-copy"><span class="xhc-eyebrow">' . esc_html( $order_label ) . '</span><h2>' . esc_html( $title ) . '</h2><p>' . esc_html( $description ) . '</p></div><span class="xhc-order-status xhc-order-status--' . esc_attr( sanitize_html_class( $order->get_status() ) ) . '">' . esc_html( wc_get_order_status_name( $order->get_status() ) ) . '</span><div class="xhc-order-success-actions"><a class="xhc-primary-link" href="' . esc_url( $courses_url ) . '">' . esc_html( $courses_label ) . '</a><a class="xhc-secondary-link" href="' . esc_url( $account_url ) . '">' . esc_html__( 'My account', 'edupress' ) . '</a></div></section>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG icon is generated from a fixed internal allowlist; dynamic values are escaped.
+}
+add_action( 'woocommerce_before_thankyou', 'xpertz_commerce_order_confirmation_banner', 5 );
 
 /**
  * Add a printable receipt action to paid orders.
